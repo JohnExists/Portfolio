@@ -1,0 +1,2722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>John Kolta, Computer Engineering Student</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0a0a0c;
+    --bg-soft: #111114;
+    --wall-bg: #131317;
+    --text: #f2f1ed;
+    --text-dim: #8b8b92;
+    --accent: #2b54ab;
+    --accent-warm: #9da9df;
+    --line: rgba(242,241,237,0.09);
+  }
+
+  *{ margin:0; padding:0; box-sizing:border-box; }
+
+  html{ scroll-behavior:smooth; }
+
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Inter', sans-serif;
+    min-height:100vh;
+    overflow-x:hidden;
+    position:relative;
+  }
+
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:radial-gradient(1000px circle at 50% 15%, rgba(110,107,255,0.08) 0%, rgba(110,107,255,0) 70%);
+    pointer-events:none;
+    z-index:0;
+  }
+
+  #smoke{
+    position:fixed;
+    inset:0;
+    z-index:0;
+    pointer-events:none;
+  }
+
+  .topbar{
+    position:fixed;
+    top:0; left:0; right:0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:24px 32px;
+    z-index:10;
+  }
+
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    letter-spacing:0.02em;
+    color:var(--text-dim);
+  }
+
+  .logo .mark{
+    width:26px; height:26px;
+    border-radius:7px;
+    background:linear-gradient(135deg, var(--accent), var(--accent-warm));
+    display:flex; align-items:center; justify-content:center;
+    font-size:13px; font-weight:600; color:#0a0a0c;
+  }
+
+  .cta-build{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:8px 16px;
+    border-radius:100px;
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    text-decoration:none;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+  .cta-build:hover{ border-color:var(--accent); transform:translateY(-1px); }
+  .cta-build .dot{
+    width:6px; height:6px; border-radius:50%;
+    background:var(--accent-warm);
+  }
+
+  main.hero{
+    position:relative;
+    z-index:1;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:120px 24px 160px;
+  }
+
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    color:var(--text-dim);
+    letter-spacing:0.04em;
+    margin-bottom:28px;
+    display:flex;
+    align-items:center;
+    gap:10px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px;
+    border-radius:50%;
+    background:#5fe38b;
+    box-shadow:0 0 0 4px rgba(95,227,139,0.15);
+  }
+
+  h1{
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    font-size:clamp(48px, 9vw, 96px);
+    line-height:1.03;
+    letter-spacing:-0.01em;
+  }
+
+  h1 .accent{
+    background:linear-gradient(120deg, var(--accent), var(--accent-warm));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+
+  .smoke-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  h1 .role{
+    display:block;
+    margin-top:6px;
+    color:var(--text-dim);
+    font-size:0.5em;
+    font-family:'JetBrains Mono', monospace;
+    font-style:normal;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+
+  .orb-wrap{
+    margin:56px 0 8px;
+    width:180px;
+    height:180px;
+    position:relative;
+    perspective:600px;
+  }
+
+  .orb {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background-image: url('linkedin_pfp.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    animation: breathe 5s ease-in-out infinite;
+    box-shadow: 0 0 60px rgba(110,107,255,0.35);
+    transform-style: preserve-3d;
+    transition: transform .15s ease-out;
+    will-change: transform;
+  }
+
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @keyframes breathe{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.05); }
+  }
+
+  .sub{
+    margin-top:28px;
+    max-width:480px;
+    color:var(--text-dim);
+    font-size:16px;
+    line-height:1.6;
+  }
+
+  .content-wall {
+    position: relative;
+    z-index: 2;
+    background: var(--wall-bg);
+    border-top: 4px solid #282833;
+    box-shadow: 0 -16px 40px rgba(0, 0, 0, 0.85);
+  }
+
+  nav.dock{
+    position:fixed;
+    bottom:28px;
+    left:50%;
+    transform:translateX(-50%);
+    display:flex;
+    gap:4px;
+    padding:6px;
+    background:rgba(17,17,20,0.8);
+    backdrop-filter:blur(16px);
+    border:1px solid var(--line);
+    border-radius:100px;
+    z-index:10;
+  }
+
+  nav.dock a{
+    color:var(--text-dim);
+    text-decoration:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:13px;
+    padding:10px 18px;
+    border-radius:100px;
+    transition:color .2s ease, background .2s ease;
+  }
+
+  nav.dock a:hover{
+    color:var(--text);
+    background:rgba(242,241,237,0.06);
+  }
+
+  nav.dock a.active{
+    color:#0a0a0c;
+    background:var(--text);
+  }
+
+  @media (max-width:480px){
+    nav.dock{ gap:0; }
+    nav.dock a{ padding:9px 12px; font-size:11.5px; }
+    .topbar{ padding:18px 18px; }
+    .cta-build span.label{ display:none; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    .orb, .orb-ring{ animation:none; }
+  }
+
+  .work-section{
+    position:relative;
+    z-index:1;
+    max-width:1080px;
+    margin:0 auto;
+    padding:64px 32px 40px;
+    scroll-margin-top:60px;
+  }
+
+  .work-section:last-of-type{
+    padding-bottom:200px;
+  }
+
+  .work-head{
+    text-align:center;
+    margin-bottom:56px;
+  }
+
+  .work-head .eyebrow{
+    justify-content:center;
+    margin-bottom:16px;
+  }
+
+  .work-head h2{
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    font-size:clamp(36px, 5vw, 52px);
+    letter-spacing:-0.01em;
+  }
+  .work-head h3{
+    font-family:'Instrument Serif', serif;
+    font-weight:200;
+    font-size:clamp(12px, 5vw, 32px);
+    letter-spacing:-0.01em;
+  }
+
+  .project-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+    gap:20px;
+  }
+
+  .project-card{
+    background:rgba(17,17,20,0.6);
+    backdrop-filter:blur(16px);
+    border:1px solid var(--line);
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    cursor:pointer;
+    transition:border-color .2s ease, transform .2s ease;
+  }
+
+  .project-card:hover{
+    border-color:rgba(110,107,255,0.4);
+    transform:translateY(-3px);
+  }
+
+  .project-card:focus-visible{
+    outline:2px solid var(--accent-warm);
+    outline-offset:3px;
+  }
+
+  .project-thumb{
+    position:relative;
+    aspect-ratio:16/9;
+    background:
+      radial-gradient(120% 140% at 15% -10%, rgba(110,107,255,0.35) 0%, rgba(110,107,255,0) 55%),
+      radial-gradient(120% 140% at 90% 110%, rgba(255,138,92,0.28) 0%, rgba(255,138,92,0) 55%),
+      var(--bg-soft);
+    border-bottom:1px solid var(--line);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+
+  .project-thumb svg{
+    width:56%;
+    height:56%;
+    overflow:visible;
+  }
+
+  .project-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+  }
+
+  .thumb-video-badge{
+    position:absolute;
+    top:10px;
+    right:10px;
+    display:flex;
+    align-items:center;
+    gap:5px;
+    padding:4px 9px;
+    border-radius:100px;
+    background:rgba(10,10,12,0.72);
+    border:1px solid rgba(242,241,237,0.16);
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    letter-spacing:0.04em;
+    text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .thumb-video-badge::before{
+    content:"";
+    width:0; height:0;
+    border-top:4px solid transparent;
+    border-bottom:4px solid transparent;
+    border-left:6px solid var(--accent-warm);
+  }
+
+  .project-body{
+    padding:22px 22px 24px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    flex:1;
+  }
+
+  .project-toprow{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+
+  .project-kind{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent-warm);
+  }
+
+  .project-date{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    color:var(--text-dim);
+    white-space:nowrap;
+  }
+
+  .project-name{
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    font-size:23px;
+    line-height:1.2;
+  }
+
+  .project-desc{
+    color:var(--text-dim);
+    font-size:13.5px;
+    line-height:1.55;
+  }
+
+  .project-tags{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:2px;
+  }
+
+  .project-tags span{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-dim);
+    border:1px solid var(--line);
+    border-radius:100px;
+    padding:4px 10px;
+  }
+
+  .project-links{
+    margin-top:auto;
+    padding-top:14px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px 18px;
+  }
+
+  .project-links a{
+    color:var(--text);
+    text-decoration:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:2px;
+    transition:color .2s ease, border-color .2s ease;
+  }
+
+  .project-links a:hover{
+    color:var(--accent);
+    border-color:var(--accent);
+  }
+
+  .project-more{
+    color:var(--accent-warm);
+    background:none;
+    text-decoration:none;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    border:none;
+    border-bottom:1px solid rgba(157,169,223,0.4);
+    padding:0 0 2px;
+    margin-left:auto;
+    cursor:pointer;
+    transition:color .2s ease, border-color .2s ease;
+  }
+
+  .project-more:hover{
+    color:var(--text);
+    border-color:var(--text);
+  }
+
+  .contact-sub{
+    text-align:center;
+    color:var(--text-dim);
+    font-size:14px;
+    max-width:420px;
+    margin:14px auto 0;
+    line-height:1.6;
+  }
+
+  .contact-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
+    gap:16px;
+  }
+
+  .contact-card{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    padding:20px 22px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:rgba(17,17,20,0.6);
+    backdrop-filter:blur(16px);
+    text-decoration:none;
+    color:var(--text);
+    transition:border-color .2s ease, transform .2s ease;
+  }
+
+  .contact-card:hover{
+    border-color:rgba(110,107,255,0.4);
+    transform:translateY(-3px);
+  }
+
+  .contact-label{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.05em;
+    text-transform:uppercase;
+    color:var(--accent-warm);
+  }
+
+  .contact-value{
+    font-family:'Inter', sans-serif;
+    font-size:14.5px;
+    word-break:break-word;
+  }
+
+  .contact-location{
+    text-align:center;
+    margin-top:28px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    color:var(--text-dim);
+  }
+
+  @media (max-width:480px){
+    .work-section{ padding:48px 20px 40px; }
+    .work-section:last-of-type{ padding-bottom:180px; }
+  }
+
+  /* ---- Project Detail Overlay ---- */
+  .project-modal{
+    position:fixed;
+    inset:0;
+    z-index:100;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 20px;
+    visibility:hidden;
+    opacity:0;
+    transition:opacity .25s ease, visibility 0s linear .25s;
+  }
+
+  .project-modal.is-open{
+    visibility:visible;
+    opacity:1;
+    transition:opacity .25s ease, visibility 0s linear 0s;
+  }
+
+  .project-modal-backdrop{
+    position:absolute;
+    inset:0;
+    background:rgba(6,6,8,0.78);
+    backdrop-filter:blur(4px);
+  }
+
+  .project-modal-panel{
+    position:relative;
+    width:70vw;
+    max-width:70vw;
+    height:95vh;
+    max-height:95vh;
+    background:var(--bg-soft);
+    border:1px solid var(--line);
+    border-radius:20px;
+    box-shadow:0 24px 64px rgba(0,0,0,0.5);
+    display:flex;
+    flex-direction:column;
+    overflow:hidden;
+    transform:translateY(18px) scale(0.98);
+    transition:transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+
+  .project-modal.is-open .project-modal-panel{
+    transform:translateY(0) scale(1);
+  }
+  
+
+  .project-modal-close{
+    position:absolute;
+    top:16px; right:16px;
+    width:34px; height:34px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:rgba(17,17,20,0.9);
+    color:var(--text);
+    font-size:15px;
+    line-height:1;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:10;
+    transition:border-color .2s ease, color .2s ease;
+  }
+
+  .project-modal-close:hover{
+    border-color:var(--accent-warm);
+    color:var(--accent-warm);
+  }
+
+  .project-modal-scroll{
+    flex:1;
+    min-height:0;
+    overflow-y:auto;
+    padding:36px 34px 40px;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:thin;
+    scrollbar-color:rgba(242,241,237,0.2) transparent;
+  }
+
+  .project-modal-scroll::-webkit-scrollbar{
+    width:12px;
+  }
+  .project-modal-scroll::-webkit-scrollbar-track{
+    background:transparent;
+    margin:18px 0;
+  }
+  .project-modal-scroll::-webkit-scrollbar-thumb{
+    background-color:rgba(242,241,237,0.18);
+    border-radius:100px;
+    border:3px solid var(--bg-soft);
+    background-clip:padding-box;
+  }
+  .project-modal-scroll::-webkit-scrollbar-thumb:hover{
+    background-color:rgba(242,241,237,0.35);
+  }
+
+  .project-modal-head{
+    padding-right:34px;
+    margin-bottom:22px;
+  }
+
+  .project-modal-title{
+    font-family:'Instrument Serif', serif;
+    font-weight:400;
+    font-size:clamp(26px, 4vw, 34px);
+    line-height:1.15;
+    margin:10px 0 14px;
+  }
+
+  .project-modal-body{
+    display:flex;
+    flex-direction:column;
+    gap:28px;
+  }
+
+  .modal-subsection{
+    clear:both;
+  }
+
+  .modal-subsection::after{
+    content:"";
+    display:table;
+    clear:both;
+  }
+
+  .modal-subsection h4{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent-warm);
+    margin-bottom:8px;
+  }
+
+  .modal-subsection h5{
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.03em;
+    color:var(--text);
+    margin:14px 0 6px;
+  }
+
+  .modal-subsection p{
+    color:var(--text-dim);
+    font-size:14.5px;
+    line-height:1.7;
+    margin-bottom:10px;
+  }
+
+  .modal-subsection ul, .modal-subsection ol{
+    color:var(--text-dim);
+    font-size:14.5px;
+    line-height:1.7;
+    margin:0 0 10px 20px;
+  }
+
+  .modal-subsection li{ margin-bottom:4px; }
+
+  .modal-subsection code{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12.5px;
+    background:rgba(242,241,237,0.06);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:1px 5px;
+    color:var(--text);
+  }
+
+  .modal-caption{
+    font-family:'JetBrains Mono', monospace;
+    font-size:10.5px;
+    color:var(--text-dim);
+    font-style:italic;
+    margin-top:6px;
+    display:block;
+  }
+
+  .modal-img-placeholder{
+    /* width:220px;
+    max-width:40%;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:
+      radial-gradient(120% 140% at 15% -10%, rgba(110,107,255,0.25) 0%, rgba(110,107,255,0) 55%),
+      radial-gradient(120% 140% at 90% 110%, rgba(255,138,92,0.2) 0%, rgba(255,138,92,0) 55%),
+      var(--bg);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    color:var(--text-dim);
+    text-align:center;
+    padding:8px; */
+    display: block;
+    height: auto;
+    width: auto;
+  }
+
+  .modal-img-placeholder.float-left{
+    float:left;
+    margin:4px 18px 12px 0;
+    max-width: 55%;
+  }
+
+  .modal-img-placeholder.float-right{
+    float:right;
+    margin:4px 0 12px 18px;
+    max-width: 55%; 
+  }
+
+  .modal-img-placeholder.align-center {
+    float: none;
+    clear: both;
+    width: 90%;
+    max-width: 100%;
+    margin: 12px auto;
+  }
+
+  .modal-img-caption {
+    margin-top: 6px;
+    font-size: 0.85rem;
+    color: var(--text-muted, #f2f1ed);
+    text-align: center;
+    font-style:italic;
+
+  }
+
+  @media (max-width: 480px) {
+    .modal-img-placeholder,
+    .modal-img-placeholder.float-left,
+    .modal-img-placeholder.float-right,
+    .modal-img-placeholder.align-center {
+      max-width: 100%;
+      width: 100%;
+      float: none;
+      margin: 10px 0;
+    }
+  }
+
+  .modal-pointcloud-wrap{
+    width:100%;
+    aspect-ratio:16/10;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:#000;
+    margin-bottom:6px;
+    position:relative;
+    overflow:hidden;
+  }
+  .modal-pointcloud-wrap canvas{
+    width:100%;
+    height:100%;
+    display:block;
+    cursor:grab;
+  }
+  .modal-pointcloud-wrap canvas:active{ cursor:grabbing; }
+  .modal-pointcloud-hint{
+    position:absolute;
+    bottom:8px; left:10px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:10px;
+    color:rgba(242,241,237,0.5);
+    pointer-events:none;
+  }
+
+  .modal-table{
+    width:100%;
+    border-collapse:collapse;
+    margin-bottom:14px;
+    font-size:13px;
+  }
+  .modal-table th, .modal-table td{
+    border:1px solid var(--line);
+    padding:7px 10px;
+    text-align:left;
+    color:var(--text-dim);
+  }
+  .modal-table th{
+    color:var(--text);
+    font-family:'JetBrains Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    background:rgba(242,241,237,0.04);
+  }
+
+  .project-modal .project-links{
+    margin-top:28px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+
+  @media (max-width:768px){
+    .project-modal-panel{ width:90vw; max-width:90vw; }
+    .modal-img-placeholder{ width:160px; }
+  }
+
+  @media (max-width:480px){
+    .project-modal{ padding:0; align-items:flex-end; }
+    .project-modal-panel{ width:100vw; max-width:100vw; height:90vh; max-height:90vh; border-radius:20px 20px 0 0; }
+    .project-modal-scroll{ padding:30px 22px 32px; }
+    .modal-img-placeholder.float-left,
+    .modal-img-placeholder.float-right{
+      float:none;
+      width:100%;
+      max-width:100%;
+      margin:8px 0 14px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <canvas id="smoke"></canvas>
+  <div class="smoke-overlay"></div>
+
+  <main class="hero" id="me">
+    <p class="eyebrow">Available for coop/internship opportunities!</p>
+
+    <h1>
+      Hey, I'm <span class="accent">John</span>
+      <span class="role">3RD YEAR COMPUTER ENGINEERING STUDENT</span>
+    </h1>
+
+    <div class="orb-wrap">
+      <div class="orb-ring"></div>
+      <div class="orb"></div>
+      <div class="orb-highlight"></div>
+    </div>
+
+    <p class="sub">Student at McMaster University passionate about designing hardware and software.</p>
+  </main>
+
+  <div class="content-wall" id="contentWall">
+
+    <!-- Hardware Section -->
+    <section id="hardware" class="work-section">
+      <div class="work-head">
+        <p class="eyebrow">Selected Work</p>
+        <h2>My Hardware Work</h2>
+        <h3>Click each card for a more detailed description.</h3>
+      </div>
+
+      <div class="project-grid">
+
+        <!-- DSP and ML IP Block / HADI Lab -->
+        <article class="project-card" data-project="dsp-ml">
+          <div class="project-thumb">
+            <span class="thumb-video-badge">Video</span>
+            <img src="lab/thumb.png" alt="Research Assistant">
+
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Research</span>
+              <span class="project-date">May 2026 – Present</span>
+            </div>
+            <h3 class="project-name">DSP Digital Design Research Assistant @ HADI Lab</h3>
+            <p class="project-desc">Designing a real-time SystemVerilog/Simulink IP block for detecting neurons in calcium imaging data, combining FFT/IFFT pipelines, CNNs, and FIR filters for real-time video processing.</p>
+            <div class="project-tags"><span>SystemVerilog</span><span>Simulink</span><span>CNN</span><span>DSP</span></div>
+            <div class="project-links">
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- McMaster Rocketry -->
+        <article class="project-card" data-project="rocketry">
+          <div class="project-thumb">
+            <span class="thumb-video-badge">Video</span>
+            <img src="rocketry/thumb.png" alt="McMaster Rocketry Bulkhead PCB">
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Extracurricular</span>
+              <span class="project-date">Jan 2026 – Aug 2026</span>
+            </div>
+            <h3 class="project-name">McMaster Rocketry, Controls Subteam</h3>
+            <p class="project-desc">Designing PCBs in KiCAD for the competition rocket's bulkhead including parachute deployment detection and CAN bus integration under a 10cm diameter constraint, and researching STM32 F1 JTAG daisy-chain flashing for a 33,551 ft apogee target.</p>
+            <div class="project-tags"><span>KiCAD</span><span>STM32</span><span>CAN Bus</span><span>PCB</span></div>
+            <div class="project-links">
+              <a href="https://www.macrocketry.ca/" target="_blank" rel="noopener">Team Website ↗</a>
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- RISC-V SoC -->
+        <article class="project-card" data-project="riscv-soc">
+          <div class="project-thumb">
+            <img src="riscv/thumb.png" alt="McMaster Rocketry Bulkhead PCB">
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">Dec 2025 – Jan 2026, June 2026 – Jul 2026</span>
+            </div>
+            <h3 class="project-name">5-Stage Pipelined RISC-V SoC</h3>
+            <p class="project-desc">Architected a 5-stage pipelined RV32I core in SystemVerilog with hazard detection, forwarding, pipeline flushing, and 2-bit dynamic branch prediction. Deployed on a Tang Nano 20K FPGA at 54MHz with memory-mapped GPIO/SPI and RISC-V assembly drivers for a SPI LCD.</p>
+            <div class="project-tags"><span>SystemVerilog</span><span>RISC-V</span><span>FPGA</span><span>ModelSim</span></div>
+            <div class="project-links">
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- Digital-to-Analog Converter -->
+        <article class="project-card" data-project="dac-project">
+          <div class="project-thumb">
+            <img src="dac/thumb.png" alt="McMaster Rocketry Bulkhead PCB">
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">Apr 2026</span>
+            </div>
+            <h3 class="project-name">3-Bit Digital-to-Analog Converter</h3>
+            <p class="project-desc">Designed a binary-weighted DAC using summing and inverting op-amps to convert 3-bit digital inputs into a linear 0–5V analog output, then measured gain error, differential non-linearity, and offset error against calculated and expected values.</p>
+            <div class="project-tags"><span>LTSpice</span><span>Op-Amps</span><span>Analog Design</span></div>
+            <div class="project-links">
+              <a href="https://github.com/JohnExists/HelpingKimberly-1P13-Project3" target="_blank" rel="noopener">GitHub ↗</a>
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- CMOS XOR Gate -->
+        <article class="project-card" data-project="cmos-xor-gate">
+          <div class="project-thumb">
+            <img src="xor/thumb.png" alt="McMaster Rocketry Bulkhead PCB">
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">Apr 2026</span>
+            </div>
+            <h3 class="project-name">CMOS XOR Gate</h3>
+            <p class="project-desc">Designed and proved a transistor-level CMOS XOR gate from first principles, built it on a breadboard with CD4007CN MOSFETs, and characterized VH/VL, propagation delay, and rise/fall time against a 12-transistor conventional design and a pass-transistor alternative.</p>
+            <div class="project-tags"><span>CMOS</span><span>Transistors</span><span>Oscilloscope</span></div>
+            <div class="project-links">
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+        <!-- Transistor Amplifier -->
+        <article class="project-card" data-project="transistor-ampllifier">
+          <div class="project-thumb">
+            <img src="amp/thumb.png" alt="Transistor Amplifier Results">
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">March 2026</span>
+            </div>
+            <h3 class="project-name">Transistor Amplifier</h3>
+            <p class="project-desc">Designed a Common Collector BJT buffer amplifier targeting unity gain with less than 10% attenuation, deriving component values by hand, validating in LTSpice, and confirming midband gain and linearity on the bench with an oscilloscope and spectrum analyzer.</p>
+            <div class="project-tags"><span>BJT</span><span>LTSpice</span><span>Common Collector</span></div>
+            <div class="project-links">
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Software Section -->
+    <section id="software" class="work-section">
+      <div class="work-head">
+        <p class="eyebrow">Selected Work</p>
+        <h2>My Software Work</h2>
+        <h3>Click each card for a more detailed description.</h3>
+
+      </div>
+
+      <div class="project-grid">
+
+        <!-- Minecraft Clone -->
+        <article class="project-card" data-project="minecraft-clone">
+          <div class="project-thumb">
+            <span class="thumb-video-badge">Video</span>
+            <img src="minecraft/thumb.png" alt="Minecraft">
+
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">Apr 2022 – Aug 2022</span>
+            </div>
+            <h3 class="project-name">3D OpenGL Minecraft Clone</h3>
+            <p class="project-desc">Developed a 3D voxel game in C++ using OpenGL, with modular OOP subsystems, GLSL shaders for fog and texture-atlas mapping, and optimizations (batched rendering, frustum/face culling) improving framerate by 250%.</p>
+            <div class="project-tags"><span>C++</span><span>OpenGL</span><span>GLSL</span><span>CMake</span></div>
+            <div class="project-links">
+              <a href="https://github.com/JohnExists/3DVoxelGame" target="_blank" rel="noopener">GitHub ↗</a>
+              <a href="https://drive.google.com/file/d/1sdpHZvgtWpVx5qomV7aueo2FrZ0vmoIH/view" target="_blank" rel="noopener">Video Demo ↗</a>
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!-- LiDAR Hallway Mapper -->
+        <article class="project-card" data-project="lidar-mapper">
+          <div class="project-thumb">
+            <img src="lidar/thumb.png" alt="LiDAR">
+
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">Feb 2026 – Apr 2026</span>
+            </div>
+            <h3 class="project-name">LiDAR-Based Hallway Mapper</h3>
+            <p class="project-desc">Wrote C firmware on an ARM Cortex-M4 to read I2C LiDAR sensor data, plus a Python UART tool to log and visualize readings as a 3D scatter plot, with full hardware datasheet documentation.</p>
+            <div class="project-tags"><span>C</span><span>Cortex-M4</span><span>I2C</span><span>Python</span></div>
+            <div class="project-links">
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article>
+
+        <!--
+        <article class="project-card" data-project="ai-video-pipeline">
+          <div class="project-thumb">
+            <span class="thumb-video-badge">Video</span>
+            <svg viewBox="0 0 100 100" fill="none">
+              <rect x="18" y="24" width="54" height="40" rx="3" stroke="#f2f1ed" stroke-width="2"/>
+              <rect x="28" y="34" width="54" height="40" rx="3" stroke="#ff8a5c" stroke-width="2" fill="#0a0a0c"/>
+              <path d="M48 48L48 60L60 54Z" fill="#f2f1ed"/>
+            </svg>
+          </div>
+          <div class="project-body">
+            <div class="project-toprow">
+              <span class="project-kind">Project</span>
+              <span class="project-date">May 2025 – Jul 2025</span>
+            </div>
+            <h3 class="project-name">AI-Automated Video Pipeline</h3>
+            <p class="project-desc">Built a Python pipeline converting LLM-generated JSON video specs into rendered educational videos, generating slides with PIL/LaTeX, narration via Kokoro TTS, and assembling final output with FFmpeg.</p>
+            <div class="project-tags"><span>Python</span><span>FFmpeg</span><span>TTS</span><span>LaTeX</span></div>
+            <div class="project-links">
+              <a href="https://drive.google.com/file/d/1JZQryAucsj3IhVf4FbDh9ryiAjeLlHTk/view?usp=sharing" target="_blank" rel="noopener">Video Demo ↗</a>
+              <button class="project-more" type="button">View Details →</button>
+            </div>
+          </div>
+        </article> -->
+
+      </div>
+    </section>
+
+    <section id="contact" class="work-section">
+      <div class="work-head">
+        <p class="eyebrow">Get In Touch</p>
+        <h2>Contact Me</h2>
+        <p class="contact-sub">Open to co-op and internship opportunities, reach out any time.</p>
+      </div>
+
+      <div class="contact-grid">
+        <a class="contact-card" href="mailto:johnkoltawork@gmail.com">
+          <span class="contact-label">Email</span>
+          <span class="contact-value">johnkoltawork@gmail.com</span>
+        </a>
+        <a class="contact-card" href="https://linkedin.com/in/john-kolta/" target="_blank" rel="noopener">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">/in/john-kolta</span>
+        </a>
+        <a class="contact-card" href="https://github.com/JohnExists" target="_blank" rel="noopener">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">@JohnExists</span>
+        </a>
+      </div>
+
+      <p class="contact-location">Hamilton, Ontario, Canada</p>
+    </section>
+  </div>
+
+  <nav class="dock">
+    <a href="#me" class="active">Me</a>
+    <a href="#hardware">My Hardware Work</a>
+    <a href="#software">My Software Work</a>
+    <a href="#contact">Contact</a>
+  </nav>
+
+  <!-- Project Detail Overlay Modal -->
+  <div class="project-modal" id="projectModal" aria-hidden="true">
+    <div class="project-modal-backdrop" data-close></div>
+    <div class="project-modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="project-modal-close" type="button" data-close aria-label="Close project details">✕</button>
+      <div class="project-modal-scroll">
+        <div class="project-modal-head">
+          <div class="project-toprow">
+            <span class="project-kind" id="modalKind"></span>
+            <span class="project-date" id="modalDate"></span>
+          </div>
+          <h3 class="project-modal-title" id="modalTitle"></h3>
+          <div class="project-tags" id="modalTags"></div>
+        </div>
+        <div class="project-modal-body" id="modalBody"></div>
+        <div class="project-links" id="modalLinks"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PROJECT DETAIL DATA ===================== -->
+  <script>
+    // Helper to build a placeholder image block
+    function imgPlace(label, align, src) {
+      let alignClass = 'float-left';
+      if (align === 'right') {
+        alignClass = 'float-right';
+      } else if (align === 'center') {
+        alignClass = 'align-center';
+      }
+
+      if (src) {
+        return `<img src="${src}" alt="${label}" class="modal-img-placeholder ${alignClass}" style="height: auto; aspect-ratio: auto; border-radius: 10px; border: 1px solid var(--line); object-fit: contain;">`;
+      }
+
+      return `<div class="modal-img-placeholder ${alignClass}">[ Image placeholder: ${label} ]</div>`;
+    }
+
+    function imgPlaceWithCaption(label, src) {
+      let alignClass = 'float-left';
+      alignClass = 'align-center';
+
+      const captionText = label;
+
+      if (src) {
+        return `<figure class="modal-img-container ${alignClass}">
+          <img src="${src}" alt="${label}" class="modal-img-placeholder" style="width:100%;height:auto;object-fit:contain aspect-ratio: auto; border-radius: 10px; border: 1px solid var(--line); object-fit: contain;">
+          <figcaption class="modal-img-caption">${captionText}</figcaption>
+        </figure>`;
+      }
+
+      return `<figure class="modal-img-container ${alignClass}">
+        <div class="modal-img-placeholder">[ Image placeholder: ${label} ]</div>
+        <figcaption class="modal-img-caption">${captionText}</figcaption>
+      </figure>`;
+  }
+    
+    function heroMedia(kind, label, src){
+      if (kind === 'video' && src){
+        return `<div class="modal-hero-media is-video">
+          <video controls preload="metadata" style="width:100%;height:100%;border-radius:12px;" src="${src}"></video>
+        </div>`;
+      }  else if (kind === 'image' && src){
+        return `<img src="${src}" alt="${label}" style="width:100%;height:auto;object-fit:contain;border-radius:12px;border:1px solid var(--line);display:block;">`;
+      }
+      return `<div class="modal-hero-media">[ Image placeholder ]<span>${label}</span></div>`;
+    }
+
+    const projectDetails = {
+
+      /* ================= HADI LAB ================= */
+      'dsp-ml': {
+        heroType: 'video',
+        heroLabel: 'HADI Lab: CaImAn Hardware Accelerator overview video',
+        heroVideoSrc: 'lab/video_thumb_out.mp4',
+
+        sections: [
+          {
+            heading: 'Research Overview',
+            html: `
+              <p>John Kolta's Research: CaImAn Hardware Accelerator. Under the supervision of Daniel Wong (M.Asc) & Dr. Abdelhadi.</p>
+            `
+          },
+          {
+            heading: 'Background: Calcium Imaging',
+            html: `
+              <p>Brain cells of lab animals are genetically modified to glow brighter every time a neuron is active. This activity is picked up by cameras through a process called '2-photon imaging'.</p>
+              <p>CaImAn is an open-source tool written in Python/MATLAB used for analysis of this data. It allows us to view which neurons are activated at each frame. The software for CaImAn is too slow to be used for closed-loop feedback. Our solution is to design a hardware accelerator for CaImAn.</p>
+              ${imgPlace('CaImAn / calcium imaging data flow diagram', 'right')}
+              <p>The first challenge is implementing motion correction. The video camera shakes, this is problematic for neuron detection. The purpose of motion correction is to stabilize the video. Non-rigid motion correction from the NormCorre algorithm will be used.</p>
+            `
+          },
+          {
+            heading: 'Possible Approaches',
+            html: `
+              <table class="modal-table">
+                <tr><th>Approach</th><th>Pros</th><th>Cons</th></tr>
+                <tr>
+                  <td>HDL</td>
+                  <td>Most control over timing, power efficiency and area</td>
+                  <td>Long development time; difficult verification</td>
+                </tr>
+                <tr>
+                  <td>HLS</td>
+                  <td>Shorter development time than HDL; easier verification</td>
+                  <td>Significant rewrite of the code required; less support for this application</td>
+                </tr>
+                <tr>
+                  <td>Simulink Vision HDL Toolbox</td>
+                  <td>Tools made for this application; easier to learn</td>
+                  <td>Limited support for possible ASIC targets; code rewrite is still required</td>
+                </tr>
+              </table>
+            `
+          },
+          {
+            heading: 'Vision HDL Toolbox Workflow',
+            html: `
+              ${imgPlace('Vision HDL Toolbox simulation: Simulink block diagram', 'left')}
+              <p>3 videos shown in simulation: Input, MATLAB Behavioral Output, and HDL Output. For the HDL model, the image is serialized, in other words, 1 pixel per 1 clock cycle. The Vision HDL Toolbox has specialized blocks (e.g. FFT).</p>
+            `
+          },
+          {
+            heading: 'Interdisciplinary Nature of this Project',
+            html: `<p>This project draws on neuroscience (calcium imaging, neuron activity), signal processing (FFT/IFFT, motion correction), and digital hardware design (SystemVerilog, fixed-point arithmetic, FPGA/ASIC targets) simultaneously.</p>`
+          },
+          {
+            heading: 'Architectural Decisions Made',
+            html: `
+              <ul>
+                <li>Fixed size of the input images (512x512)</li>
+                <li>Fixed patch size of the input images (not decided yet)</li>
+                <li>Images are going to be 16-bit grayscale</li>
+                <li>Fixed-point arithmetic instead of floating point, Mathworks has a tool called 'Fixed Point Designer' that converts floating point designs to fixed point</li>
+                <li>Both the template buffer and memory for the 2D FFT will use BRAM/SRAM, reads and writes to buffers are very frequent</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Timeline',
+            html: `
+              <ul>
+                <li><strong>July:</strong> Editing the MATLAB code to develop a behavioral model</li>
+                <li><strong>August 6:</strong> Designing the HDL datapath to match the behavioral model</li>
+                <li><strong>August 27:</strong> Verification and testing begins</li>
+                <li><strong>September 10:</strong> Verification and testing</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Update (Aug 20): Detecting Motion via Cross-Correlation',
+            html: `
+              ${imgPlace('Cross-correlation shift detection figure', 'right')}
+              <p>Cross-correlation is used to detect how much an image needs to be shifted to match another reference image. The largest bottleneck is computing the DFT/IDFT.</p>
+              <h5>Recall: 2D Fourier Transform (FFT)</h5>
+              <p>Take a Fourier Transform (FT) for each row, then perform a column FT on the previous output.</p>
+              <p><strong>Important note:</strong> taking a Fourier Transform outputs a non-integer complex number.</p>
+              <p>How is a 2D Fourier Transform implemented? This was explored as a dedicated design question in this stage of the research.</p>
+            `
+          },
+          {
+            heading: 'Update (Aug 27): Current Proposed Design',
+            html: `
+              <p>Recall the motion correction algorithm: the design revisits the NormCorre non-rigid motion correction approach as the basis for the hardware datapath.</p>
+              ${imgPlace('Proposed hardware datapath block diagram', 'left')}
+              <h5>Main FSM</h5>
+              <p>A main finite state machine (FSM) was designed to sequence the stages of the motion-correction pipeline (data load, FFT, cross-correlation, shift application, output).</p>
+              <h5>Difference between Interpolation Methods</h5>
+              <p>Several interpolation methods were compared for sub-pixel shift correction after the cross-correlation peak is found, trading off hardware cost against accuracy of the applied shift.</p>
+            `
+          }
+        ]
+      },
+
+      /* ================= ROCKETRY ================= */
+      'rocketry': {
+        heroType: 'video',
+        heroLabel: 'McMaster Rocketry: Bulkhead PCB overview video',
+        heroVideoSrc: 'rocketry/video_thumb.mp4',
+        sections: [
+          {
+            heading: 'Overview',
+            html: `
+              <p>Worked within a technical team to design the avionics of a rocketry project targeting a 30,000 ft altitude for competition (updated target: 33,551 ft).</p>
+              <p>Designed PCBs for the rocket bulkhead in KiCAD used for detecting parachute deployment & CAN bus integration, adhering to a 10 cm diameter constraint.</p>
+              <p>Used Git and GitHub to manage code changes across the team; received feedback on designs and synchronised development efforts through 2 meetings every week.</p>
+            `
+          },
+          {
+            heading: 'Bulkhead PCB: Design Purpose',
+            html: `
+              ${imgPlace('Bulkhead PCB 3D render', 'left')}
+              ${imgPlace('Bulkhead PCB routed layout (Bulkhead PCB V2)', 'right')}
+              <p>The Bulkhead PCBs serve two primary purposes: acting as a sealed barrier for only the e-match wires to pass into the parachute bays, and detecting parachute ejection from the rocket.</p>
+              <p>Osiris contains two Bulkhead PCBs, one per parachute bay coupler (i.e. drogue and main chute). Each Bulkhead PCB also contains another PCB soldered into the middle of the bulkhead PCB, to allow the CAN Bus connector to be at a right angle, as unfortunately there are only horizontal Molex Pico-Lock connectors that exist. The Bulkhead PCBs both have completely isolated wiring to allow the pass-through of the e-match cables, as shown in the wiring diagram in section 9.1.1.</p>
+              <p>The microcontroller on the Bulkhead PCB monitors parachute ejection via a photoresistor, and also acts as the CAN Bus termination with a termination resistor attached across the CAN Bus connector.</p>
+            `
+          },
+          {
+            heading: 'Bulkhead Feedback (Round 1)',
+            html: `
+              <ol>
+                <li>✅ GND plane on both layers, not just top. There was a power trace running around the board — alternatively, this can be made a power pour. If unsure about pours, look at some YouTube videos — just don't make isolated planes in the middle of a set of traces. When doing this, the planes need to be "stitched" together with ground vias (stitching vias). Also, don't do thermal connections, do solid connections.</li>
+                <li>✅ Ideally connectors on the bottom plane are closest to the curved edge — this is ideal, but make sure footprints/connectors themselves still fit. This applies to the ones on the current top layer, which were overhanging based on their model/picture.</li>
+                <li>✅ Needs more room around the oscillator, and if possible, insert a via fence (see examples in Gryphon or VLF5/6).</li>
+                <li>✅ Noticed there are two LEDs — one goes on each side, probably (to see if the PCB is live from either side).</li>
+                <li>✅ Look at how last year's traces between the two connectors for e-matches were done: high current → large trace size, utilizes the fact that one of the connectors is a through-hole.</li>
+                <li>✅ The SWD traces can go directly across the board by flipping to the top layer right on that side of the SWD connector.</li>
+                <li>✅ For the LDO, have the capacitors closer — this is true overall: if an improvement can be made, make it.</li>
+                <li>✅ There was 1 unrouted trace — the two 3V3 traces weren't connected somehow; KiCAD thought they were connected through the STM which is not good. That unrouted trace turned out to be the disconnected 3V3.</li>
+                <li>✅ The CAN connector needs to have the same spacing as last year (measured in KiCAD); the holes need to match last year's connector (i.e. where the daughter PCB is inserted), and the screw holes on the edge will need edge cuts, recommended to lock them once done.</li>
+                <li>✅ Schematic says the 4.7u cap needs to go near pin 1 (VCC3). Every 3V3 pin needs a decoupling capacitor near it, typically one per 3V3 pin plus extras; check the schematic and click a component to see where it is on the layout.</li>
+                <li>Some semantics that rocketry does: place for writing down a serial number (look at another PCB like Gryphon, the white square), silkscreen needs to label one pair of connectors as backup and the other as primary (for e-match charges, different charges are made for backup and primary), take out the sharp corners for the edge cuts (it was made as a semicircle ideally but not for handling), and add the name "Bulkhead PCB V2" and "McMaster Rocketry" somewhere.</li>
+              </ol>
+            `
+          },
+          {
+            heading: 'Bulkhead Feedback (Round 2)',
+            html: `
+              <ul>
+                <li>Random trace splitting stuff</li>
+                <li>Disconnected traces</li>
+                <li>Pour covering whole board</li>
+                <li>Change via density for fence, also, ground side completely incorrect, it links to the plane</li>
+                <li>Primary and backup silkscreens visibility // proximity to edge of board, causes them to move the traces, another issue with this is the other set of connectors</li>
+                <li>Origin of pour isolated from rest of pour, connected via small trace</li>
+                <li>!! Incorrect and previously didn't catch: the SWD connector is not within the confines of the board</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Message Sent to Subhan (Layout Instructions)',
+            html: `
+              <p><em>"I've just created these two outlines and you can work from there. The first should go on 'edge cuts' and it should go on the edge cuts layer. The second is a guideline (approximate location relative to semicircle) for connectors, probably best to put it on the user comments layer, the inner semi-circle is where you can put components, they can't go elsewhere because of the connection to the structure. The squares represent the connectors, they go towards the circular edge, and the longer rectangle is the CAN connector, should also go as close as possible to the circular edge without interfering with the other connectors. The screw terminals have no restriction on placement. To import these, go to file &gt; import &gt; dxf (or something similar) and put the same location in each time (I'd recommend then just moving what you've already routed). You'll also want to re-import last year's connector for CAN bus, as I mentioned, and place that in the rectangular connector location (note it's actually 4 connectors in KiCAD positioned in one line). Let me know if you have any questions."</em></p>
+              <p>front → parachute/e-match side<br>back → electronics/non-e-match side</p>
+              <ul>
+                <li>Feel free to reference Ryan's schematic</li>
+                <li>[ ] Import the new DXF files Daniel sent! (note: make sure they are aligned by placing them at the same numerical location)</li>
+                <li>[ ] Cleanup bulkhead PCB (files)</li>
+                <li>[ ] Switch current CAN bus connector to daughter PCB footprint</li>
+                <li>[ ] Remake layout file (or just redo/cleanup)</li>
+                <li>[ ] Note electronics should be on the side away from the e-matches (i.e. this should be the bottom side) all components on the "away"/bottom side; place bottom side connectors in the square boxes on user comments</li>
+              </ul>
+            `
+          }
+        ]
+      },
+
+      /* ================= RISC-V SOC ================= */
+      'riscv-soc': {
+        heroType: 'image',
+        heroLabel: '5-Stage Pipelined In-Order RISC-V SoC (RV32I)',
+        heroImageSrc: 'riscv/thumb.png',
+        sections: [
+          {
+            heading: 'System Block Diagram',
+            html: `
+              ${imgPlace('SoC block diagram: RISC-V CPU + Instruction/Data Memory + Peripheral Bus + 7 LEDs / GPIO / SPI', 'left')}
+              <p>Designed a RV32I CPU core in SystemVerilog supporting 33 instructions and 2-bit dynamic branch prediction. Implemented on-chip peripherals (GPIO, SPI) and developed a memory-mapped design. Conducted functional verification using SystemVerilog testbenches and ModelSim. Deployed and validated the design on a Tang Nano 20k FPGA achieving a 54 MHz clock. Wrote RISC-V Assembly drivers to interface with a SPI LCD Display.</p>
+              <h5>Instructions Supported</h5>
+              <p><strong>Arithmetic:</strong> add, sub, and, or, xor, sll, srl, sra, addi, andi, ori, xori, slli, srli, srai, lui</p>
+              <p><strong>Branch/Jump:</strong> beq, bne, blt, bltu, bge, bgeu, jal, jalr</p>
+              <p><strong>Memory:</strong> lh, lb, lbu, lhu, lw, sh, sb, sw</p>
+            `
+          },
+          {
+            heading: 'Instruction Fetch (IF)',
+            html: `
+              <p>The main purpose of this phase is to get the next PC value. Since we are using a Harvard architecture, we have a 1 KB I-Cache storing all instructions and fetch the instruction at the program counter (PC) value. There are 5 cases that determine the next PC:</p>
+              <ol>
+                <li><strong>No branches:</strong> This is the simplest case here, we just increment the PC value by 4.</li>
+                <li><strong>Branch:</strong> To determine if an instruction is a branch or not, there is a pre-decoding step to look at the opcode (the 7 least significant bits). The address that it would branch to is also determined via pre-decoding to find the immediate value to add to the current PC. This pre-decoding approach was used instead of a branch target buffer since it saves on memory and complexity when verifying the design. Furthermore, it is a relatively cheap operation (only 1 add operation), meaning it won't add any significant delay to this stage.
+                  <p>To determine whether this branch is taken or not, a 2-bit dynamic branch prediction scheme is used. The buffer size for the Branch History Table is 32 entries, where each entry stores a 2 bit value. To index in this table, bits 6:2 of the current PC value is used if the most significant bit is 1, that means the branch is predicted taken, and if it's 0, that means it's predicted not taken. Bits 1:0 aren't used because instructions are 4-byte aligned, so bits 1:0 are always 00 regardless of the PC value.</p>
+                </li>
+                <li><strong>Jump:</strong> If pre-decoding signifies the current instruction is a jump-and-link instruction, the immediate value is also pre-decoded and added to the PC (similar to branches). If a jump-and-link register instruction is decoded, rs1 + immediate is used; however, rs1 is only available after the register file is read in ID, so the target cannot be resolved during IF. Instead, the PC is speculatively incremented by 4 in IF, and the correct target is computed once rs1 is available. This is treated similarly to a misprediction: when the true target is resolved, the instructions fetched in the intervening cycles are flushed and the PC is redirected.</li>
+                <li><strong>Wrong Branch Prediction:</strong> A misprediction is only known once the actual branch condition is evaluated in the EX stage, so by the time it's detected, two additional instructions have already entered the pipeline in IF and ID. When this happens, those two instructions are flushed (turned into NOPs), the corresponding entry in the Branch History Table is updated with the correct outcome, and the PC is redirected to the correct address, the branch target if it should have been taken, or PC+4 if it should not have been.</li>
+                <li><strong>Load Use Hazard:</strong> If the instruction currently being decoded needs a value produced by a load instruction that hasn't reached the MEM stage yet, forwarding cannot supply it in time, since the loaded data isn't available until after memory is read. In this case the PC is held at its current value for one cycle instead of incrementing, and a bubble is inserted into the pipeline until the load result is ready to forward.</li>
+              </ol>
+            `
+          },
+          {
+            heading: '2-bit Dynamic Branch Predictor FSM',
+            html: `
+              ${imgPlace('2-bit saturating counter FSM: strongly taken (11) ↔ taken (10) ↔ not-taken (01) ↔ strongly not-taken (00)', 'right')}
+              <p>The predictor is a classic 2-bit saturating counter with four states: strongly taken (11), taken (10), not-taken (01), and strongly not-taken (00) that move toward the taken states on a taken (T) outcome and toward the not-taken states on a not-taken (NT) outcome.</p>
+            `
+          },
+          {
+            heading: 'Instruction Decode (ID)',
+            html: `<p>This stage decodes the fetched instruction into its individual fields (opcode, funct3, funct7, rs1, rs2, rd) and generates the control signals used by the EX, MEM and WB stages. The register file is read using rs1 and rs2, and the immediate is sign-extended based on the instruction format (I/S/B/U/J-type). The load-use hazard described above is detected here, by comparing the destination register of a load instruction sitting in EX against the source registers of the instruction currently in ID; a match asserts the stall signal that freezes the PC and IF/ID register and inserts a bubble into ID/EX.</p>`
+          },
+          {
+            heading: 'Execute (EX)',
+            html: `<p>The ALU performs the operation selected by the decoded funct3/funct7 signals, using operands that have first passed through forwarding muxes, which choose between the register file value and results forwarded from the EX/MEM or MEM/WB pipeline registers to resolve data hazards without stalling. For branches, the ALU acts as a comparator (subtraction for beq/bne, dedicated signed/unsigned comparison for blt/bltu/bge/bgeu) to produce the actual taken/not-taken result, which is checked against the IF-stage prediction. For load/store instructions, the ALU adds the base register and immediate offset to compute the memory address.</p>`
+          },
+          {
+            heading: 'Memory (MEM)',
+            html: `<p>At this point, if load or store instructions are used, the ALU output is used as the address, and if a store is used, the value from rs2 carried down from the ID stage is written to data memory at that address, with sb/sh/sw controlling the write width. If a load is used, data memory is read at that address instead, with the result sign-extended for lb/lh, zero-extended for lbu/lhu, or passed through unmodified for lw.</p>`
+          },
+          {
+            heading: 'Writeback (WB)',
+            html: `<p>The final result, whether the ALU output, the value read from memory, or PC+4 for jal/jalr is written back into the register file at rd, completing the instruction.</p>`
+          }
+        ]
+      },
+
+      /* ================= DAC ================= */
+      'dac-project': {
+        heroType: 'image',
+        heroLabel: 'Design Project 5: Digital-to-Analog Converter (ELECENG 2EI4)',
+        heroImageSrc: 'dac/built-circuit.png',
+
+        sections: [
+          {
+            heading: 'Summary',
+            html: `<p>The main objective for this design is to produce an analog output from digital input. The output of this analog waveform must be linearly proportional to the digital inputs, and the full-scale voltage (V<sub>fs</sub>) of this analog waveform must be 5V. The requirement is that for the outputs a logic low is 0V and a logic high is 5V. The digital inputs must not leak more than 1uA.</p>`
+          },
+          {
+            heading: 'Circuit Diagram & How It Works',
+            html: `
+              ${imgPlaceWithCaption('Figure 1: The circuit schematic for the digital-to-analog converter, a binary-weighted DAC design was used. ', 'dac/circuit-diagram.png', )}<br>
+              <p>This design is called a binary-weighted DAC. It takes 3 digital inputs and weights them using 3 resistor values, R, 2R and 4R, for the MSB, middle, and LSB respectively. It sums up these voltages using a summing op-amp. Since the output of the first op-amp is negative and has a full-scale voltage of 3.3V, it's fed into an inverting op-amp to ensure it has a positive waveform with a V<sub>fs</sub> of 5V. Please note that the &lt;1uA requirement is met since the internal resistance of the op-amp, R<sub>IN</sub>, is greater than 1 TΩ according to the datasheet, which is high enough to satisfy this requirement and minimize the current drawn from the inputs.</p>
+            `
+          },
+          {
+            heading: 'Calculations',
+            html: `
+              <p>In this design a summing op-amp is used and has the following relationship:</p>
+              <p><code>-Vout = (RF/R1)·V1 + (RF/R2)·V2 + (RF/R3)·V3</code></p>
+              <p>Letting R<sub>F</sub> = 5k, R<sub>1</sub> = 10k, R<sub>2</sub> = 20k and R<sub>3</sub> = 40k, a weighted binary DAC is achieved. All of these numbers are multiples of 5k: R<sub>1</sub> = 2×5k, R<sub>2</sub> = 4×5k and R<sub>3</sub> = 8×5k.</p>
+              <p>The gain required for the second inverting op-amp is 5/3.3V = 1.51515 or ~1.52. Thus, the resistor values of the inverting op-amp must satisfy: G<sub>V</sub> = -R<sub>f</sub>/R<sub>in</sub> = -1.52, using 1k as R<sub>in</sub>, then R<sub>f</sub> must be 1.52k.</p>
+              <p><strong>Reference:</strong> <a href="https://fr.mathworks.com/help/msblks/ref/binaryweighteddac.html" target="_blank" rel="noopener">fr.mathworks.com/help/msblks/ref/binaryweighteddac.html</a></p>
+            `
+          },
+          {
+            heading: 'Generating Digital Inputs',
+            html: `${imgPlaceWithCaption('Figure 2: The input waveform.', 'dac/input-waveform.png')}<br><p>To measure the full transfer characteristics, each digital input had to be represented. All 3-bit inputs were generated through the AD2's Waveform Patterns, three square waves were used, with frequencies of 1 Hz (MSB), 2 Hz, and 4 Hz (LSB).</p>`
+          },
+          {
+            heading: 'Full Transfer Characteristics',
+            html: `${imgPlaceWithCaption('Figure 3: Output of the first op-amp (staircase, negative)', 'dac/results-1.png')}<br>
+                  ${imgPlaceWithCaption('Figure 4: Final results, measured at the output of the second inverting op-amp', 'dac/results-2.png')}<br>
+                  ${imgPlaceWithCaption('Figure 5: Final results, measured after the second inverting op-amp with the MSB square wave of the input waveform overlapped on top of it.', 'dac/results-3.png')}<br>
+                  `
+          },
+          {
+            heading: 'Measured Results',
+            html: `
+              <table class="modal-table">
+                <tr><th>Binary Value</th><th>Numerical Value</th><th>Expected Value (V)</th><th>Actual Value (V)</th><th>Difference (V)</th></tr>
+                <tr><td>000</td><td>0</td><td>0.000</td><td>-0.00191</td><td>0.00191</td></tr>
+                <tr><td>001</td><td>1</td><td>0.625</td><td>0.6272</td><td>0.0022</td></tr>
+                <tr><td>010</td><td>2</td><td>1.250</td><td>1.245</td><td>0.005</td></tr>
+                <tr><td>011</td><td>3</td><td>1.875</td><td>1.873</td><td>0.002</td></tr>
+                <tr><td>100</td><td>4</td><td>2.500</td><td>2.459</td><td>0.041</td></tr>
+                <tr><td>101</td><td>5</td><td>3.125</td><td>3.087</td><td>0.038</td></tr>
+                <tr><td>110</td><td>6</td><td>3.750</td><td>3.706</td><td>0.044</td></tr>
+                <tr><td>111</td><td>7</td><td>4.375</td><td>4.337</td><td>0.038</td></tr>
+              </table>
+              <p>Expected value was calculated by: V<sub>ref</sub> × Numerical Value / Full-Scale Numerical Value, where V<sub>ref</sub> is 5V and the full-scale numerical value is 8.</p>
+            `
+          },
+          {
+            heading: 'Gain Error',
+            html: `<p>The gain error is the deviation measured at the full-scale voltage value compared to the actual expected value (the % error voltage result at 111). This difference is 0.038V. Thus, the final % error is 0.038V/4.375V = 0.8686%, which is within the expected error range showing agreement of the values. The % error formula used is |expected − measured| / expected.</p>`
+          },
+          {
+            heading: 'Maximum Differential Non-Linearity',
+            html: `
+              <table class="modal-table">
+                <tr><th>Inputs</th><th>|Measured Steps|</th></tr>
+                <tr><td>V001 − V000</td><td>0.62911</td></tr>
+                <tr><td>V010 − V001</td><td>0.6178</td></tr>
+                <tr><td>V011 − V010</td><td>0.628</td></tr>
+                <tr><td>V100 − V011</td><td>0.586</td></tr>
+                <tr><td>V101 − V100</td><td>0.628</td></tr>
+                <tr><td>V110 − V101</td><td>0.619</td></tr>
+                <tr><td>V111 − V110</td><td>0.631</td></tr>
+              </table>
+              <p>The maximum differential non-linearity is measured from the steps between each value. Ideally, the step between each input must be 0.625V. However, the largest deviation measured was 0.586V. Finding the % error: (0.625V − 0.586V)/0.625V = 0.0624. This means the maximum deviation from the linear DAC model is 6.24%, which is close to what is expected.</p>
+            `
+          },
+          {
+            heading: 'Offset Error',
+            html: `<p>The offset error is defined as the deviation of the circuit and can be determined by finding the voltage output for a binary input of 0 (answering: how much is the circuit shifted up and down?). At an input of 0, a perfect 0V is expected given the definition of a DAC; however, the measured value was -0.00191V. Thus, the measured offset error found is 1.91mV, which isn't a perfect 0V.</p>`
+          },
+          {
+            heading: 'Discussion — Origin of Errors',
+            html: `<p>The largest contribution to the errors present in this design are the resistors used. Each resistor has a tolerance of 5%, meaning each voltage value isn't weighted perfectly, resulting in up to 5% error in all the values measured. Another source of error could be internal resistance in the measurement tools of the AD2 scope and internal resistance within the wires. The sources generated by the AD2 also aren't perfect — there are deviations in these values as well. All of these errors contributed to the deviations present in the results.</p>`
+          },
+          {
+            heading: 'Alternate Design Considered',
+            html: `
+              ${imgPlace('Capacitor DAC', 'right', 'dac/circuit-diagram-alternate.png')}
+              <p>Another possible method of designing this circuit is using a binary-weighted DAC with capacitors instead of resistors. This design is preferred in real ICs where precise DACs are required, such as SAR ADCs, due to the lower tolerance of capacitors used, which results in higher achievable precision. A binary-weighted resistor design was used here due to the constraints of the project — the kit was limited to resistors, MOSFETs, and amplifiers.</p>
+            `
+          }
+        ]
+      },
+
+      /* ================= CMOS XOR GATE ================= */
+      'cmos-xor-gate': {
+        heroType: 'image',
+        heroLabel: 'Design Project 4 — XOR Gate (ELECENG 2EI4)',
+        heroImageSrc: 'xor/built-circuit.png',
+        sections: [
+        {
+            heading: 'Summary',
+            html: `<p>The main objective for this design is to produce an analog output from digital 
+                    input. The output of this analog waveform must be linearly proportional to the 
+                    digital inputs, and the full-scale voltage (Vfs) of this analog waveform must be 5V. 
+                    The requirements that for the outputs a logic low is 0V and a logic high is 5V. The 
+                    digital inputs must not leak more than 1uA. We are using a 100 nF capacitor as the 
+                    load (thought this is very large compared to a parasitic capacitance in VLSI circuits)</p>`
+          },
+          {
+            heading: 'Part One: Circuit Schematic',
+            html: `
+              ${imgPlace('Figure 1', 'center', 'xor/fig1.png')}
+              <p>Proof that this circuit is XOR (recall AND = Series, OR = Parallel):</p>
+              <p>For PMOS: (A'+B')(A + B)</p>
+              <p>Using the distributive property: A'A + A'B + B'A + BB' = A XOR B</p>
+              ${imgPlace('Figure 2', 'center', 'xor/fig2.png')}
+            `
+          },
+          {
+            heading: 'Ideal Sizing',
+            html: `<p>To determine the ideal sizing, the worst-case scenario for the circuit must be found. Analyzing the PMOS portion, the longest path is 2 p-type MOSFETs, so the path is equal to 2p. Similarly for the NMOS portion, it is 2n. Given p = 5/1 and n = 2/1 from the derivation given in lecture, the ideal ratio between PMOS and NMOS is (2×5/1)/(2×2/1) = 2.5.</p>`
+          },
+          {
+            heading: 'Feasibility of Ideal Sizing in Hardware',
+            html: `<p>In this hardware design it is infeasible since the exact size is chosen by the manufacturers of the specific MOSFET IC, not the designer. The ratios chosen are fixed for each MOSFET such that (W/L)P = 5/1 and (W/L)N = 2/1, so it can't meet the 2p and 2n requirements for symmetry. As a result, the circuit is asymmetrical, resulting in more skewed timing, less efficiency, and slower switch times.</p>`
+          },
+          {
+            heading: 'Part Two — Functional Testing',
+            html: `${imgPlace('Figure 3', 'center', 'xor/fig3.png')}
+            <p>The digital IO pins on the AD2 were used to demonstrate that the circuit implements the XOR function. DIO0 (pink) and DIO1 (green) are the inputs to the XOR and DIO2 (purple) is the output. The inputs are set to be square waves, DIO1 = 1kHz and DIO0 = 2kHz. As shown, the results are as expected: the output is high if and only if one of the inputs is high.</p>`
+          },
+          {
+            heading: 'Static Level Testing',
+            html: `
+              ${imgPlace('Figure 4', 'center', 'xor/fig4.png')}
+              ${imgPlace('Figure 5', 'center', 'xor/fig5.png')}
+              ${imgPlace('Figure 6', 'center', 'xor/fig6.png')}
+
+              <p>One input was set to logic-1 (+5V) and the second input was a square wave between 0 and 5V, measured on the oscilloscope. With V<sub>A</sub> = 0-5V and V<sub>B</sub> = 5V: V<sub>H</sub> = 4.9254V, V<sub>L</sub> = -79.76565 mV.</p>
+              <p>With the inputs switched, V<sub>A</sub> = 5V and V<sub>B</sub> = 0-5V: V<sub>H</sub> = 5.0087V, V<sub>L</sub> = -13.36695 mV. Comparing the results, there isn't a significant difference between the values for V<sub>H</sub> and V<sub>L</sub>, which can be attributed to sampling errors.</p>
+              <p>The lowest input voltage that is recognized as high, V<sub>IH</sub>, was found to be 3.5V — anything lower and the circuit fails.</p>
+            `
+          },
+          {
+            heading: 'Propagation Delay (τPLH, τPHL, τP)',
+            html: `
+              <p>One input was set to logic-1 (+5V), the second input set as a square wave between 0 and 5V, and a 100 nF capacitor was connected at the output to simulate a load (a very large load by VLSI standards, used here for illustration).</p>
+              ${imgPlace('Figure 7', 'center', 'xor/fig7.png')}
+              ${imgPlace('Figure 8', 'center', 'xor/fig8.png')}
+              ${imgPlace('Figure 9', 'center', 'xor/fig9.png')}
+              ${imgPlace('Figure 10', 'center', 'xor/fig10.png')}
+              <p>Time taken to reach 90% voltage (rise time): 389.7 us.</p>
+              <p>Time taken to reach 10% voltage (fall time): 240.6 ms.</p>
+              <p>Time taken to reach 50% voltage, τ<sub>PHL</sub> = 71.69 ms.</p>
+              <p>Time taken to reach 50% voltage, τ<sub>PLH</sub> = 179.8 us. The discrepancy in τ<sub>PLH</sub> and τ<sub>PHL</sub> is due to asymmetries in the actual circuit.</p>
+              <p>τ<sub>P</sub> = (τ<sub>PLH</sub> + τ<sub>PHL</sub>) / 2 = (71.69 ms + 179.8us) / 2 = 35.935ms</p>
+            `
+          },
+          {
+            heading: 'Part Four (Bonus) — Pass-Transistor Alternative',
+            html: `
+              <p>A design according to the conventional methodology requires 12 transistors (all of the available MOSFETs on the two MC14007 chips available). There is an alternative design using pass transistors, similar to the transmission gates used in a prior project, that uses only 6 transistors (M1–M6).</p>
+              <p>Functional testing on the logic analyzer confirmed the output is high if and only if one of the inputs is high, with the same settings as the conventional design's functional test.</p>
+              <p>Static analysis with V<sub>A</sub> = 0-5V and V<sub>B</sub> = 5V: V<sub>H</sub> = 5.0600V, V<sub>L</sub> = -74.59874 mV — the voltage levels match the conventional design.</p>
+              <p>Rise time: 8.095 us. Fall time: 299.6 us — one important observation is that rise and fall times are better for this alternative design since there are fewer MOSFETs.</p>
+              <p>τ<sub>PHL</sub> = 137.9 us. τ<sub>PLH</sub> = 2.296 us — same issue: the circuit is asymmetric, causing a large discrepancy in the values.</p>
+              <p>τ<sub>P</sub> = (τ<sub>PLH</sub> + τ<sub>PHL</sub>) / 2 = (137.9 us + 2.296 us) / 2 = 70.098us</p>
+            `
+          }
+        ]
+      },
+
+      /* ================= TRANSISTOR AMPLIFIER ================= */
+      'transistor-ampllifier': {
+        heroType: 'image',
+        heroLabel: 'Design Project 3 — Transistor Amplifier (ELECENG 2EI4)',
+        sections: [
+          {
+            heading: 'Circuit Schematic',
+            html: `
+              ${imgPlace('Common Collector BJT amplifier schematic (2N3904)', 'left')}
+              <p>In this circuit, current enters the base of the BJT and exits the emitter. A capacitor is used at the emitter to filter out any low-frequency DC signals. To satisfy the project specifications, V<sub>OUT</sub> is in series with a 100-ohm resistor.</p>
+            `
+          },
+          {
+            heading: 'Transistor Type: BJT',
+            html: `<p>A BJT was chosen since it has a higher gain, higher transconductance, and a more linear IV-curve than a MOSFET. In other words, the output voltage follows more closely with the input voltage in a BJT than a MOSFET.</p>`
+          },
+          {
+            heading: 'Topology: Common Collector',
+            html: `<p>The amplifier topology used was a Common Collector since it is the most ideal for achieving the requirement of a voltage buffer (G<sub>V</sub> = 1). Per the project specifications, the gain must achieve an attenuation of less than 10%. Since this device is being used as a buffer, one of its important properties should be a moderate to high input impedance, a low output impedance, and V<sub>IN</sub> and V<sub>OUT</sub> should be in phase. This is satisfied through the common collector model.</p>`
+          },
+          {
+            heading: 'Component Value Calculations',
+            html: `
+              <p>First, an assumption was made about the circuit: the beta of a collector current of approximately 10 mA gives a beta value of 100 to 300 — a beta value of 100 was used. The BJT is always assumed to be in forward active mode.</p>
+              <p>For this design: R<sub>S</sub> = 100Ω, R<sub>L</sub> = 100Ω, V<sub>TH</sub> = 0.0025, input range = -0.5V to 0.5V.</p>
+              <p>Finding g<sub>m</sub>: 0.5 ≤ (0.2)(0.025)(1+100g<sub>m</sub>) → 0.5 ≤ 0.005(1+100g<sub>m</sub>) → 100 ≤ 1+100g<sub>m</sub> → g<sub>m</sub> ≥ 990 mS.</p>
+              <p>A<sub>V0</sub> ≥ 0.9 (due to 10% attenuation). A<sub>V0</sub> = g<sub>m</sub>R<sub>L</sub>(1 + g<sub>m</sub> + R<sub>L</sub>)(R<sub>IN</sub>/(R<sub>IN</sub>+0.1)) ≥ 0.9 (recall R<sub>T</sub> = 0.1). Solving for R<sub>IN</sub>: R<sub>IN</sub> ≥ 1 kΩ.</p>
+              <p>From the components kit, two 100kΩ resistors were used since they were the most available:</p>
+              <p>r<sub>π</sub> = β/g<sub>m</sub> = 100/0.99 = 101 Ω. R<sub>IN</sub> = R<sub>1</sub> ‖ R<sub>2</sub> ‖ r<sub>π</sub>(1+g<sub>m</sub>R<sub>L</sub>) = 100kΩ ‖ 100kΩ ‖ 10.1kΩ = 8.40kΩ.</p>
+              <p>Final check: A<sub>V0</sub> = [(g<sub>m</sub>R<sub>L</sub>)/(1+g<sub>m</sub>R<sub>L</sub>)][R<sub>IN</sub>/(R<sub>t</sub>+R<sub>IN</sub>)] ≥ 0.9 = [(0.99×100)/(1+0.99×100)][8.40k/(100+8.40k)] = 0.978 ≥ 0.9. The voltage gain is valid, meaning these values allow the design to get within range.</p>
+              <p>Capacitor values C<sub>1</sub> = C<sub>2</sub> = 100uF worked best from testing in simulation and design.</p>
+            `
+          },
+          {
+            heading: 'Simulation',
+            html: `
+              ${imgPlace('LTSpice transient sim — Vin/Vout overlay', 'right')}
+              <p>In LTSpice, the 2N3904 model was used since it matches the kit's actual BJT and the parameters given in its datasheet.</p>
+              <p>Simulation settings: Stop time 2ms, time to start saving data 0, maximum timestep 0.002ms. Transient analysis was used to derive all desired values (voltage gain, frequency, and phase shift).</p>
+              <p>Measured data from the simulation: V<sub>in</sub> peak-to-peak = 499.99636mV − (−499.99636mV) = 999.99272 mV. V<sub>out</sub> peak-to-peak = 493.15009mV − (−492.27011mV) = 985.4202 mV.</p>
+              <p>So G<sub>V</sub> = V<sub>out</sub>/V<sub>in</sub> = 985.4202 mV / 999.99272 mV = 0.985427374.</p>
+              <p>Frequency check: f<sub>IN</sub> = 1/(1.7422544ms − 0.743593ms) = 1.00134039 kHz; f<sub>OUT</sub> = 1.00134039 kHz. The frequencies of both signals are completely identical, with a very small phase shift between the input and output curve.</p>
+            `
+          },
+          {
+            heading: 'Physical Circuit',
+            html: `${imgPlace('Breadboard build, wires labeled Vin / Base / Vout / BJT, March 24 2026', 'left')}<p>The breadboard build corresponds directly to the schematic, with the 5V and -5V supply rails, the base input path, and the emitter-follower output routed as shown.</p>`
+          },
+          {
+            heading: 'Waveform Measurements',
+            html: `
+              ${imgPlace('Oscilloscope capture — Vin (Channel 2) and Vout (Channel 1) overlaid', 'right')}
+              <p>The gain of the amplifier was determined using the oscilloscope's measurement tool, using both peak-to-peak values from both channels and the formula V<sub>out</sub>/V<sub>in</sub>.</p>
+              <table class="modal-table">
+                <tr><th></th><th>Calculations</th><th>Simulation</th><th>Actual</th></tr>
+                <tr><td>Midband Voltage Gain</td><td>0.978</td><td>0.985427374</td><td>0.98104 / 1.0054 = 0.975770837</td></tr>
+              </table>
+              <p>Comparing the simulation to the actual value, there is a 0.98% difference, making the actual value very close to what's expected. Compared to the calculations, there is a 0.228191% difference. This confirms that both the calculations and simulations are close to the actual value.</p>
+            `
+          },
+          {
+            heading: 'Linearity at 0.5V Input Amplitude',
+            html: `${imgPlace('Spectrum analyzer plot — Channel 1 & 2', 'left')}<p>Linearity is demonstrated through the absence of spikes in Channel 1 and Channel 2 (with an exception at the beginning, shown at a lower frequency than the sample of the plot).</p>`
+          }
+        ]
+      },
+
+      /* ================= MINECRAFT CLONE ================= */
+      'minecraft-clone': {
+        heroType: 'video',
+        heroLabel: 'Minecraft Clone — gameplay video demo',
+        sections: [
+          {
+            heading: 'Introduction',
+            html: `
+              ${imgPlace('UML-style class diagram: GameState, World, Chunk, Renderer, Mesh, etc.', 'right')}
+              <p>This project is a 3D sandbox game inspired by the popular game "Minecraft". Players spawn in a procedurally generated block world with the freedom to build and destroy to their heart's content. This project is created in C++ using the OpenGL API through GLFW and Glad. The timespan that this project took was 3 months, between March and June of 2022.</p>
+            `
+          },
+          {
+            heading: 'Features',
+            html: `
+              <ul>
+                <li>Efficient use of object-oriented programming principles</li>
+                <li>CMake integration for cross platform building</li>
+                <li>Randomly generated "natural-looking" worlds</li>
+                <li>Far away terrain is covered in fog</li>
+                <li>Proper object collision between the player and the world</li>
+                <li>Unique biomes to switch up the terrain (plains, forests, desert, ocean)</li>
+                <li>The ability for the player to traverse around this world</li>
+                <li>Block breaking and block placing for any block available in the world</li>
+                <li>Inventory system allowing the player to swap between which blocks they want to place</li>
+                <li>Seamless UI allowing for a seamless user experience</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Images',
+            html: `
+              ${imgPlace('In-game screenshot — forest biome with trees', 'left')}
+              ${imgPlace('Old version — coastal cliffs terrain', 'right')}
+              ${imgPlace('Old version — mountain terrain with structure', 'left')}
+              ${imgPlace('Old version — desert pyramid terrain', 'right')}
+              <p><em>Old Versions</em> — earlier iterations of the terrain generator, shown alongside a later purple-tree forest biome and a flat grass test render.</p>
+            `
+          },
+          {
+            heading: 'Skills Developed',
+            html: `
+              <p>Through this project, numerous new technologies were learned:</p>
+              <ul>
+                <li>C++ and its object-oriented properties</li>
+                <li>Performance optimization in 3D graphics</li>
+                <li>GLFW and Glad to allow communication with the OpenGL API</li>
+                <li>Git and GitHub for proper version control</li>
+                <li>Matrix and vector manipulation in the context of 3D graphics</li>
+                <li>Large-scale project management</li>
+                <li>Utilizing JSON to read and extract data</li>
+              </ul>
+            `
+          }
+        ]
+      },
+
+      /* ================= LIDAR HALLWAY MAPPER ================= */
+      'lidar-mapper': {
+        heroType: 'pointcloud',
+        heroLabel: 'Interactive 3D point cloud (drag to orbit, scroll to zoom)',
+        sections: [
+          {
+            heading: 'Spatial Hallway Mapper — COMPENG 2DX3',
+            html: `<p>The main purpose of this device is to take a 3D mapping of a hallway. Using a Time-of-Flight (TOF) sensor via I2C combined with a motor via GPIO, a 360° mapping of the cross-section of a hallway is taken.</p>`
+          },
+          {
+            heading: 'Features',
+            html: `
+              <ul>
+                <li>Uses the Texas Instruments MSP-EXP432E401Y microcontroller to handle operations at 14 MHz, code written in C</li>
+                <li>Operates at 5V</li>
+                <li>Takes 64 samples every 360° (one sample every 5.625°), angles set by the 28BYJ-48 stepper motor</li>
+                <li>Uses a VL53L1X Time-of-Flight sensor to map hallways with a radius of up to 400cm, achieved through I2C at 100 kbits/s</li>
+                <li>Transmits UART via the virtual COM port for communication, supporting Windows, Mac and Linux, using a baud rate of 115,200 bps</li>
+                <li>Active low push button to START and STOP the device</li>
+                <li>Uses Python to collect data and plot the 3D map</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Block Diagram',
+            html: `
+              ${imgPlace('Block diagram: I2C request → TOF IR pulse & time-of-flight → distance calc → UART to PC', 'left')}
+              <p>uController sends an I2C signal to the VL53L1X to request a data sample → VL53L1X emits an infrared beam of light and tracks the time it takes for the beam to travel back → the time data is transmitted to the uController via I2C and the distance is calculated in cm → the distance data is sent to a computer through the USB port via UART.</p>
+            `
+          },
+          {
+            heading: 'Device Characteristics',
+            html: `
+              <table class="modal-table">
+                <tr><th>Category</th><th>Parameter</th><th>Value</th></tr>
+                <tr><td>Microcontroller</td><td>Clock Speed</td><td>14 MHz</td></tr>
+                <tr><td>Microcontroller → PC</td><td>UART Baud Rate</td><td>115,200 bps</td></tr>
+                <tr><td>TOF</td><td>Maximum Distance</td><td>400 cm</td></tr>
+                <tr><td>TOF</td><td>Maximum Speed</td><td>100 kbits/s</td></tr>
+              </table>
+              <table class="modal-table">
+                <tr><th>Category</th><th>Description</th><th>Mapping</th></tr>
+                <tr><td>Microcontroller</td><td>Measurement Status LED</td><td>PN1</td></tr>
+                <tr><td>Microcontroller</td><td>UART TX Status</td><td>PF4</td></tr>
+                <tr><td>Microcontroller</td><td>TOF Ready (Additional Status)</td><td>PN0</td></tr>
+                <tr><td>Microcontroller</td><td>Push Button 1</td><td>PJ0</td></tr>
+                <tr><td>Microcontroller</td><td>Push Button 2</td><td>PJ1</td></tr>
+                <tr><td>Motor</td><td>IN1, IN2, IN3, IN4</td><td>PH0, PH1, PH2, PH3</td></tr>
+                <tr><td>Motor</td><td>Power</td><td>5V</td></tr>
+                <tr><td>TOF</td><td>SCL, SDA</td><td>PB2, PB3</td></tr>
+                <tr><td>TOF</td><td>Power</td><td>5V</td></tr>
+              </table>
+              <table class="modal-table">
+                <tr><th>Category</th><th>Description</th><th>Tools</th></tr>
+                <tr><td>Microcontroller</td><td>Programming Language</td><td>C</td></tr>
+                <tr><td>Microcontroller</td><td>Toolchain</td><td>Keil uVision</td></tr>
+                <tr><td>Software (PC)</td><td>Programming Language</td><td>Python</td></tr>
+                <tr><td>Software (Libraries)</td><td>Data Collection</td><td>PySerial</td></tr>
+                <tr><td>Software (Libraries)</td><td>3D Plotting</td><td>Matplotlib</td></tr>
+              </table>
+            `
+          },
+          {
+            heading: 'Detailed Description',
+            html: `
+              <p>The main purpose of the MSP-EXP432E401Y microcontroller is to handle operations such as receiving and transmitting sensor data. It uses I2C to request and receive a data sample from the TOF sensor.</p>
+              <p>Another highly relevant aspect of this device allows a human to interface with the system through push buttons. The device uses the internal push buttons of the MCU, which have an active-low configuration.</p>
+              ${imgPlace('Active-low push button circuit (PJ0)', 'right')}
+              <p>Once pressed, the TOF sensor begins ranging. Afterwards, it starts capturing distance data in a 360 degree motion. The motor turns 5.625 degrees, and then a sample is taken from the TOF sensor through I2C — this operation is repeated 64 times for every full rotation.</p>
+              <p>How does it work? One of the golden plates on the TOF emits a pulse of infrared light with a wavelength of 940nm. This photon travels and is reflected once it hits a given surface. The photon is detected by the other golden plate; the time taken for this entire process to occur is measured and sent over I2C to the host device. The precision of this time value is 16-bits.</p>
+              <p>The photon is known to travel at the speed of light, 3.0×10^8 m/s. Since speed of light equals distance over time: <code>distance = (speed of light / 2) × measured time</code>. There is a division by 2 since the measured time accounts for the photon traveling to the surface and back — the full round trip — while the MCU only needs the one-way trip to the given surface.</p>
+              <p>To perform communications with the TOF, an API offered by the manufacturer allows the developer to interface with the sensor in a more convenient and intuitive way — a superior, more bug-free alternative compared to manually writing and managing the I2C bus. Note that I2C is still used under the hood and must be wired accordingly.</p>
+              ${imgPlace('I2C wiring diagram: MSP432E401Y ↔ VL53L1X', 'left')}
+              <p>In the program, <code>I2C0_Init()</code> is called to initialize I2C. The sensor is booted by calling the <code>VL53L1X_BootState</code> function, and is also initialized through calling <code>VL53L1X_SensorInit()</code>. The sensor must also start ranging through <code>VL53L1X_StartRanging()</code>. Once the TOF is ready to sample, the MCU checks if the sensor is ready through <code>VL53L1X_CheckForDataReady()</code> and then takes the sample through <code>VL53L1X_GetDistance()</code>, obtaining the value in cm.</p>
+              <p>Afterwards, the motor rotates by 5.625 degrees and <code>VL53L1X_CheckForDataReady()</code> and <code>VL53L1X_GetDistance()</code> are called again. The motor turning at this precise angle is crucial for the accuracy of the device.</p>
+              <p>After the data in cm is obtained on the host device, it is transmitted over UART to the host machine. Using a Python script and the PySerial library, the data is read via UART through the USB port and stored.</p>
+              <p>The host machine stores all the radius values for the TOF sensor data. The angle is also known — the motor starts at 0° and moves by 5.625° for every scan (360°/64 scans). Using both the radius and angle, the x and y values can be derived through basic trigonometry: <code>a = R·cos(α)</code>, <code>b = R·sin(α)</code>.</p>
+              <p>After polar coordinates are converted to cartesian coordinates, these x and y values of the cross-section of the hallway can be plotted. To make it a 3D plot, the user moves the device a fixed distance forward and takes another cross-sectional scan by pressing the button again — the same plotting process occurs but with a higher z-value to account for forward movement. All of these values are written to a .xyz file for plotting. The number of 360° scans taken is specified by the user by updating the 'NUM_OF_ROTATIONS' variable.</p>
+              <p>The main library used for plotting is Matplotlib due to its extensive support online. It first reads all the plotted points in the .xyz file, then generates a 3D plot of all the points where the user can pan around and view it.</p>
+            `
+          },
+          {
+            heading: 'Limitations',
+            html: `
+              <ul>
+                <li>The range of the TOF sensor is up to 400 cm, meaning the device fails to map larger hallways or larger rooms. Furthermore, the TOF sensor uses I2C for communication, which has a limited data transfer rate of 100 kbits/s.</li>
+                <li>UART can transmit information at a maximum of 115,200 bps, which might be a bottleneck if higher data throughput is required. This was verified through checking the baud rate set for both the MCU and the laptop.</li>
+                <li>Trigonometric function calculations are required to be performed on the main laptop due to the limited floating point capabilities of the microcontroller. Due to the lack of precision, calculating trigonometric functions on the MCU wouldn't be accurate and the system would fail.</li>
+                <li>The speed of the motors and the wait for the TOF sensor to be ready limits how quickly the device operates. Furthermore, the device takes 64 samples per rotation, which slows the device even more. This limitation was verified by visually inspecting and seeing what was slowing the system — most of the time was spent rotating the motor and waiting for the sensor to range.</li>
+                <li>The MCU needs to be plugged into the laptop at all times — there is no wireless connection capability, which could be an issue if there are space constraints.</li>
+                <li>The MCU was constrained at a bus speed of 14 MHz; if large scale computations like matrix multiplication were required, the set clock speed would be a bottleneck.</li>
+                <li>The time value obtained from the TOF sensor will always have a quantization error.</li>
+              </ul>
+            `
+          },
+          {
+            heading: 'Instructions (Windows)',
+            html: `
+              <ol>
+                <li>Build the circuit referencing the given circuit diagram.</li>
+                <li>Determine the COM port of the device: plug in the MCU, open 'Device Manager' on Windows, and locate 'Port (COM & LTP)'. Expanding the arrow should show 'XDS110 Class Application/User UART (COMX)' — note the X value.</li>
+                <li>Open the Python script that comes with this project and update the line <code>PORT = 'COM8'</code> to <code>PORT = 'COMX'</code> where X is the number identified in Device Manager.</li>
+                <li>In the same file, update the number of 360° scans to make by updating the 'NUM_OF_ROTATIONS' variable.</li>
+                <li>Open the Keil uVision project by double-clicking the .uvproj file. After opening, click 'Translate', 'Build', then 'Load'.</li>
+                <li>Click the RESET button on the microcontroller.</li>
+                <li>Run the Python script — there should be a UART connection established.</li>
+                <li>Go to the hallway to be mapped.</li>
+                <li>Click the PJ0 button to start sampling — the device must stay stationary for the entire duration of the scanning.</li>
+                <li>Once the 360° of scanning is complete, move forward with the device and press the button to scan again — repeat steps 8-10 to get the desired number of rotations.</li>
+              </ol>
+              ${imgPlace('Wiring diagram + full assembled hardware in cardboard enclosure', 'left')}
+            `
+          },
+          {
+            heading: 'Expected Output',
+            html: `
+              ${imgPlace('Real hallway photo vs. 3D plotted point cloud (head-on view)', 'left')}
+              ${imgPlace('Top-down photo vs. top-down 3D plot showing corridor constriction', 'right')}
+              <p>The head-on view of the hallway and the same view in the 3D plotter show that certain features, like trash cans, can be picked out, causing a protruding-out appearance. The top-down view shows how the corridor constricts in the middle, matching the physical floor plan.</p>
+            `
+          },
+          {
+            heading: 'Software / Firmware Flowchart',
+            html: `<p>The microcontroller side initializes ports and clocks, waits for the PJ0 button, boots and starts ranging the TOF sensor, then loops: check TOF ready → get distance/time data → convert to cm → send via UART → rotate motor 5.625° clockwise → repeat until a full 360° spin is complete → rotate motor 360° counter-clockwise to reset. The laptop side establishes a COM port connection, waits for PJ1, receives sensor data via UART, computes x/y from distance and angle for each sample, writes x, y, z (z = i×10) to a .xyz file, and once all rotations are collected, reads the .xyz file and initializes the 3D plot.</p>`
+          }
+        ]
+      },
+
+      /* ================= DISABILITY DEVICE (kept, resume-only) ================= */
+      'disability-device': {
+        heroType: 'image',
+        heroLabel: 'Disability Assistance Device',
+        sections: [
+          {
+            heading: 'Overview',
+            html: `<p>Led a 4-person team to design a microwave audio interface for users with visual impairment. Wrote C++ firmware on the ESP32 to sample ultrasonic sensors in order to track the user's finger position and host a WebSocket server for text-to-speech audio output. Achieved a 90% detection accuracy, and met all design goals under the constraint of &lt;$30.</p>`
+          }
+        ]
+      },
+
+      /* ================= AI VIDEO PIPELINE — left as-is, not replicated per instructions ================= */
+      'ai-video-pipeline': {
+        heroType: 'video',
+        heroLabel: 'AI-Automated Video Pipeline — demo video',
+        sections: [
+          {
+            heading: 'Overview',
+            align: 'left',
+            paragraphs: [
+              'Placeholder overview: automated end-to-end Python multimedia pipeline transforming structured JSON video specifications into fully rendered educational content.'
+            ]
+          },
+          {
+            heading: 'Processing Architecture',
+            align: 'right',
+            paragraphs: [
+              'Integrates dynamic PIL layout engines, LaTeX formula rendering, Kokoro neural Text-To-Speech (TTS) audio generation, and programmable FFmpeg video rendering pipelines.'
+            ]
+          }
+        ]
+      }
+    };
+
+    const modal = document.getElementById('projectModal');
+    const modalKind = document.getElementById('modalKind');
+    const modalDate = document.getElementById('modalDate');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalTags = document.getElementById('modalTags');
+    const modalBody = document.getElementById('modalBody');
+    const modalLinks = document.getElementById('modalLinks');
+
+    let lastFocusedEl = null;
+    let activePointCloud = null;
+
+    function openProjectModal(card){
+      const slug = card.getAttribute('data-project');
+      const detail = projectDetails[slug];
+
+      modalKind.textContent = card.querySelector('.project-kind')?.textContent || '';
+      modalDate.textContent = card.querySelector('.project-date')?.textContent || '';
+      modalTitle.textContent = card.querySelector('.project-name')?.textContent || '';
+
+      modalTags.innerHTML = '';
+      card.querySelectorAll('.project-tags span').forEach(tag => {
+        const span = document.createElement('span');
+        span.textContent = tag.textContent;
+        modalTags.appendChild(span);
+      });
+
+      modalLinks.innerHTML = '';
+      card.querySelectorAll('.project-links a').forEach(a => {
+        const link = document.createElement('a');
+        link.href = a.href;
+        link.target = '_blank';
+        link.rel = 'noopener';
+        link.textContent = a.textContent;
+        modalLinks.appendChild(link);
+      });
+
+      modalBody.innerHTML = '';
+
+      // Tear down any previous point cloud viewer
+      if (activePointCloud){
+        activePointCloud.dispose();
+        activePointCloud = null;
+      }
+
+      if (detail){
+        // Hero media block
+        if (detail.heroType === 'pointcloud'){
+          const wrap = document.createElement('div');
+          wrap.className = 'modal-pointcloud-wrap';
+          wrap.innerHTML = `<div class="modal-pointcloud-hint">${detail.heroLabel || ''}</div>`;
+          modalBody.appendChild(wrap);
+          // Defer init until element is in layout
+          requestAnimationFrame(() => {
+            activePointCloud = initPointCloudViewer(wrap);
+          });
+        } else if (detail.heroType === 'video'){
+          modalBody.insertAdjacentHTML('beforeend', heroMedia('video', detail.heroLabel, detail.heroVideoSrc));
+        } else if (detail.heroType === 'image'){
+          modalBody.insertAdjacentHTML('beforeend', heroMedia('image', detail.heroLabel, detail.heroImageSrc));
+        }
+
+        if (detail.sections){
+          detail.sections.forEach(section => {
+            const secWrap = document.createElement('div');
+            secWrap.className = 'modal-subsection';
+
+            const h4 = document.createElement('h4');
+            h4.textContent = section.heading;
+            secWrap.appendChild(h4);
+
+            if (section.html){
+              const div = document.createElement('div');
+              div.innerHTML = section.html;
+              secWrap.appendChild(div);
+            } else if (section.paragraphs){
+              // legacy format (ai-video-pipeline only)
+              if (section.img){
+                const img = document.createElement('img');
+                img.src = section.img;
+                img.alt = section.heading;
+                img.className = 'modal-img-placeholder ' + (section.align === 'right' ? 'float-right' : 'float-left');
+                secWrap.appendChild(img);
+              }
+              section.paragraphs.forEach(text => {
+                const p = document.createElement('p');
+                p.textContent = text;
+                secWrap.appendChild(p);
+              });
+            }
+
+            modalBody.appendChild(secWrap);
+          });
+        }
+      }
+
+      lastFocusedEl = document.activeElement;
+      modal.classList.add('is-open');
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+      modal.querySelector('.project-modal-scroll').scrollTop = 0;
+      modal.querySelector('.project-modal-close').focus();
+    }
+
+    function closeProjectModal(){
+      modal.classList.remove('is-open');
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      if (activePointCloud){
+        activePointCloud.dispose();
+        activePointCloud = null;
+      }
+      if (lastFocusedEl) lastFocusedEl.focus();
+
+          const videos = modal.querySelectorAll('video');
+      videos.forEach(video => {
+        video.pause();
+        video.currentTime = 0; // Optional: resets video to start
+      });
+    }
+
+
+    document.querySelectorAll('.project-card').forEach(card => {
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-haspopup', 'dialog');
+      const name = card.querySelector('.project-name')?.textContent;
+      if (name) card.setAttribute('aria-label', `View details on ${name}`);
+
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('a')) return;
+        openProjectModal(card);
+      });
+
+      card.addEventListener('keydown', (e) => {
+        if ((e.key === 'Enter' || e.key === ' ') && !e.target.closest('a')){
+          e.preventDefault();
+          openProjectModal(card);
+        }
+      });
+    });
+
+    modal.addEventListener('click', (e) => {
+      if (e.target.closest('[data-close]')) closeProjectModal();
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('is-open')) closeProjectModal();
+    });
+  </script>
+
+  <!-- ===================== LIGHTWEIGHT LIDAR POINT CLOUD VIEWER (no external libs) ===================== -->
+  <script>
+    // Raw XYZ sample data baked in from tof_final.xyz (subsampled for a lightweight, dependency-free canvas renderer).
+    // Format: [x, y, z] in cm-ish units as produced by the hallway mapper.
+    const LIDAR_POINTS_URL_FALLBACK = null; // no network fetch — points are embedded below for performance/offline reliability
+
+    function initPointCloudViewer(container){
+      const canvas = document.createElement('canvas');
+      container.appendChild(canvas);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      let W, H;
+
+      function resize(){
+        const rect = container.getBoundingClientRect();
+        W = Math.max(1, Math.floor(rect.width));
+        H = Math.max(1, Math.floor(rect.height));
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+      }
+      resize();
+      const ctx = canvas.getContext('2d');
+
+      const pts = window.__LIDAR_POINTS__ || [];
+      // Compute bounds & center
+      let cx=0, cy=0, cz=0;
+      pts.forEach(p => { cx+=p[0]; cy+=p[1]; cz+=p[2]; });
+      const n = Math.max(1, pts.length);
+      cx/=n; cy/=n; cz/=n;
+      let maxR = 1;
+      pts.forEach(p => {
+        const dx=p[0]-cx, dy=p[1]-cy, dz=p[2]-cz;
+        const r = Math.sqrt(dx*dx+dy*dy+dz*dz);
+        if (r > maxR) maxR = r;
+      });
+
+      let rotX = -0.35, rotY = 0.6;
+      let dist = maxR * 2.4;
+      let dragging = false, lastX = 0, lastY = 0;
+
+      function project(p){
+        const x = p[0]-cx, y = p[1]-cy, z = p[2]-cz;
+        // rotate around Y then X
+        const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
+        const x1 = x*cosY - z*sinY;
+        const z1 = x*sinY + z*cosY;
+        const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
+        const y1 = y*cosX - z1*sinX;
+        const z2 = y*sinX + z1*cosX;
+
+        const camZ = z2 + dist;
+        if (camZ <= 0.001) return null;
+        const f = (Math.min(W,H) * 0.9) / camZ;
+        return {
+          sx: W/2 + x1 * f,
+          sy: H/2 + y1 * f,
+          depth: camZ
+        };
+      }
+
+      let raf = null;
+      function render(){
+        ctx.setTransform(dpr,0,0,dpr,0,0);
+        ctx.clearRect(0,0,W,H);
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0,0,W,H);
+
+        // sort by depth (far first) for a simple painter's algorithm — cheap since point count is small
+        const projected = [];
+        for (let i=0;i<pts.length;i++){
+          const pr = project(pts[i]);
+          if (pr) projected.push(pr);
+        }
+        projected.sort((a,b)=> b.depth - a.depth);
+
+        for (let i=0;i<projected.length;i++){
+          const pr = projected[i];
+          if (pr.sx < -20 || pr.sx > W+20 || pr.sy < -20 || pr.sy > H+20) continue;
+          const t = Math.max(0, Math.min(1, 1 - (pr.depth / (dist*2.6))));
+          // viridis-ish gradient: purple -> teal -> yellow
+          const r = Math.floor(68 + t*(253-68));
+          const g = Math.floor(1 + t*(231-1));
+          const b = Math.floor(84 + t*(37-84));
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          const size = 1.6;
+          ctx.fillRect(pr.sx-size/2, pr.sy-size/2, size, size);
+        }
+      }
+
+      function loop(){
+        render();
+        raf = requestAnimationFrame(loop);
+      }
+
+      // Interaction
+      function onPointerDown(e){
+        dragging = true;
+        const p = e.touches ? e.touches[0] : e;
+        lastX = p.clientX; lastY = p.clientY;
+      }
+      function onPointerMove(e){
+        if (!dragging) return;
+        const p = e.touches ? e.touches[0] : e;
+        const dx = p.clientX - lastX;
+        const dy = p.clientY - lastY;
+        lastX = p.clientX; lastY = p.clientY;
+        rotY += dx * 0.008;
+        rotX += dy * 0.008;
+        rotX = Math.max(-1.4, Math.min(1.4, rotX));
+        if (e.touches) e.preventDefault();
+      }
+      function onPointerUp(){ dragging = false; }
+      function onWheel(e){
+        e.preventDefault();
+        dist *= (1 + e.deltaY * 0.001);
+        dist = Math.max(maxR*0.5, Math.min(maxR*8, dist));
+      }
+
+      canvas.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+      canvas.addEventListener('touchstart', onPointerDown, {passive:true});
+      canvas.addEventListener('touchmove', onPointerMove, {passive:false});
+      canvas.addEventListener('touchend', onPointerUp);
+      canvas.addEventListener('wheel', onWheel, {passive:false});
+
+      const onResize = () => resize();
+      window.addEventListener('resize', onResize);
+
+      loop();
+
+      return {
+        dispose(){
+          if (raf) cancelAnimationFrame(raf);
+          canvas.removeEventListener('mousedown', onPointerDown);
+          window.removeEventListener('mousemove', onPointerMove);
+          window.removeEventListener('mouseup', onPointerUp);
+          canvas.removeEventListener('touchstart', onPointerDown);
+          canvas.removeEventListener('touchmove', onPointerMove);
+          canvas.removeEventListener('touchend', onPointerUp);
+          canvas.removeEventListener('wheel', onWheel);
+          window.removeEventListener('resize', onResize);
+        }
+      };
+    }
+  </script>
+  <script src="lidar_points.js"></script>
+
+  <!-- Dynamic Scrollspy for Dock Navbar -->
+  <script>
+    const navLinks = document.querySelectorAll('nav.dock a');
+    const sections = document.querySelectorAll('#me, #hardware, #software, #contact');
+
+    const observerOptions = {
+      root: null,
+      rootMargin: '-30% 0px -60% 0px',
+      threshold: 0
+    };
+
+    const scrollObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          navLinks.forEach(link => {
+            if (link.getAttribute('href') === `#${id}`) {
+              link.classList.add('active');
+            } else {
+              link.classList.remove('active');
+            }
+          });
+        }
+      });
+    }, observerOptions);
+
+    sections.forEach(section => scrollObserver.observe(section));
+
+    const orbWrap   = document.querySelector('.orb-wrap');
+    const orb       = document.querySelector('.orb');
+    const orbRing   = document.querySelector('.orb-ring');
+    const highlight = document.querySelector('.orb-highlight');
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    if (orbWrap && orb) {
+      document.addEventListener('mousemove', (e) => {
+        const rect = orbWrap.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+
+        const dx = Math.max(-1, Math.min(1, (e.clientX - cx) / 300));
+        const dy = Math.max(-1, Math.min(1, (e.clientY - cy) / 300));
+        targetX = dx;
+        targetY = dy;
+      });
+
+      function animateOrb(){
+        if (!reduceMotion){
+          currentX += (targetX - currentX) * 0.08;
+          currentY += (targetY - currentY) * 0.08;
+
+          const tiltX = currentY * -14;
+          const tiltY = currentX * 14;
+          orb.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg)`;
+          if (orbRing) orbRing.style.transform = `translate(${currentX * 6}px, ${currentY * 6}px)`;
+          if (highlight) highlight.style.transform = `translate(${currentX * 20}px, ${currentY * 20}px)`;
+        }
+        requestAnimationFrame(animateOrb);
+      }
+      animateOrb();
+    }
+  </script>
+
+  <script>
+    (function(){
+      const canvas = document.getElementById('smoke');
+      const reduceMotionSmoke = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotionSmoke || !canvas) return;
+
+      const config = {
+        SIM_RESOLUTION: 128,
+        DYE_RESOLUTION: 720,
+        DENSITY_DISSIPATION: 0.5, 
+        VELOCITY_DISSIPATION: 0.5, 
+        PRESSURE: 0.8,
+        PRESSURE_ITERATIONS: 18,
+        CURL: 22,
+        SPLAT_RADIUS: 0.22,
+        SPLAT_FORCE: 5200,
+      };
+
+      function getWebGLContext(canvas){
+        const params = { alpha:false, depth:false, stencil:false, antialias:false, preserveDrawingBuffer:false };
+        let gl = canvas.getContext('webgl2', params);
+        const isWebGL2 = !!gl;
+        if (!isWebGL2) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+        if (!gl) return null;
+
+        let halfFloat, supportLinearFiltering;
+        if (isWebGL2){
+          gl.getExtension('EXT_color_buffer_float');
+          supportLinearFiltering = gl.getExtension('OES_texture_float_linear');
+        } else {
+          halfFloat = gl.getExtension('OES_texture_half_float');
+          supportLinearFiltering = gl.getExtension('OES_texture_half_float_linear');
+        }
+        gl.clearColor(0, 0, 0, 1);
+
+        const halfFloatTexType = isWebGL2 ? gl.HALF_FLOAT : (halfFloat && halfFloat.HALF_FLOAT_OES);
+        let formatRGBA, formatRG, formatR;
+
+        if (isWebGL2){
+          formatRGBA = { internalFormat: gl.RGBA16F, format: gl.RGBA };
+          formatRG   = { internalFormat: gl.RG16F,   format: gl.RG };
+          formatR    = { internalFormat: gl.R16F,    format: gl.RED };
+        } else {
+          formatRGBA = { internalFormat: gl.RGBA, format: gl.RGBA };
+          formatRG   = { internalFormat: gl.RGBA, format: gl.RGBA };
+          formatR    = { internalFormat: gl.RGBA, format: gl.RGBA };
+        }
+
+        return { gl, isWebGL2, halfFloatTexType, supportLinearFiltering, formatRGBA, formatRG, formatR };
+      }
+
+      const ctxInfo = getWebGLContext(canvas);
+      if (!ctxInfo){ return; }
+      const { gl, halfFloatTexType, supportLinearFiltering, formatRGBA, formatRG, formatR } = ctxInfo;
+
+      function compileShader(type, source){
+        const shader = gl.createShader(type);
+        gl.shaderSource(shader, source);
+        gl.compileShader(shader);
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)){
+          console.error(gl.getShaderInfoLog(shader));
+        }
+        return shader;
+      }
+
+      function createProgram(vsSource, fsSource){
+        const program = gl.createProgram();
+        gl.attachShader(program, compileShader(gl.VERTEX_SHADER, vsSource));
+        gl.attachShader(program, compileShader(gl.FRAGMENT_SHADER, fsSource));
+        gl.linkProgram(program);
+        if (!gl.getProgramParameter(program, gl.LINK_STATUS)){
+          console.error(gl.getProgramInfoLog(program));
+        }
+        const uniforms = {};
+        const uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
+        for (let i = 0; i < uniformCount; i++){
+          const name = gl.getActiveUniform(program, i).name;
+          uniforms[name] = gl.getUniformLocation(program, name);
+        }
+        return { program, uniforms };
+      }
+
+      const baseVertexShader = `
+        precision highp float;
+        attribute vec2 aPosition;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform vec2 texelSize;
+        void main () {
+          vUv = aPosition * 0.5 + 0.5;
+          vL = vUv - vec2(texelSize.x, 0.0);
+          vR = vUv + vec2(texelSize.x, 0.0);
+          vT = vUv + vec2(0.0, texelSize.y);
+          vB = vUv - vec2(0.0, texelSize.y);
+          gl_Position = vec4(aPosition, 0.0, 1.0);
+        }`;
+
+      const copyShader = `
+        precision mediump float;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        void main () { gl_FragColor = texture2D(uTexture, vUv); }`;
+
+      const clearShader = `
+        precision mediump float;
+        varying vec2 vUv;
+        uniform sampler2D uTexture;
+        uniform float value;
+        void main () { gl_FragColor = value * texture2D(uTexture, vUv); }`;
+
+      const splatShader = `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D uTarget;
+        uniform float aspectRatio;
+        uniform vec3 color;
+        uniform vec2 point;
+        uniform float radius;
+        void main () {
+          vec2 p = vUv - point.xy;
+          p.x *= aspectRatio;
+          vec3 splat = exp(-dot(p, p) / radius) * color;
+          vec3 base = texture2D(uTarget, vUv).xyz;
+          gl_FragColor = vec4(base + splat, 1.0);
+        }`;
+
+      const advectionShader = `
+        precision highp float;
+        varying vec2 vUv;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uSource;
+        uniform vec2 texelSize;
+        uniform float dt;
+        uniform float dissipation;
+        void main () {
+          vec2 coord = vUv - dt * texture2D(uVelocity, vUv).xy * texelSize;
+          vec4 result = texture2D(uSource, coord);
+          float decay = 1.0 + dissipation * dt;
+          gl_FragColor = result / decay;
+        }`;
+
+      const divergenceShader = `
+        precision mediump float;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform sampler2D uVelocity;
+        void main () {
+          float L = texture2D(uVelocity, vL).x;
+          float R = texture2D(uVelocity, vR).x;
+          float T = texture2D(uVelocity, vT).y;
+          float B = texture2D(uVelocity, vB).y;
+          vec2 C = texture2D(uVelocity, vUv).xy;
+          if (vL.x < 0.0) { L = -C.x; }
+          if (vR.x > 1.0) { R = -C.x; }
+          if (vT.y > 1.0) { T = -C.y; }
+          if (vB.y < 0.0) { B = -C.y; }
+          float div = 0.5 * (R - L + T - B);
+          gl_FragColor = vec4(div, 0.0, 0.0, 1.0);
+        }`;
+
+      const curlShader = `
+        precision mediump float;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform sampler2D uVelocity;
+        void main () {
+          float L = texture2D(uVelocity, vL).y;
+          float R = texture2D(uVelocity, vR).y;
+          float T = texture2D(uVelocity, vT).x;
+          float B = texture2D(uVelocity, vB).x;
+          float vorticity = R - L - T + B;
+          gl_FragColor = vec4(0.5 * vorticity, 0.0, 0.0, 1.0);
+        }`;
+
+      const vorticityShader = `
+        precision highp float;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform sampler2D uVelocity;
+        uniform sampler2D uCurl;
+        uniform float curl;
+        uniform float dt;
+        void main () {
+          float L = texture2D(uCurl, vL).x;
+          float R = texture2D(uCurl, vR).x;
+          float T = texture2D(uCurl, vT).x;
+          float B = texture2D(uCurl, vB).x;
+          float C = texture2D(uCurl, vUv).x;
+          vec2 force = 0.5 * vec2(abs(T) - abs(B), abs(R) - abs(L));
+          force /= length(force) + 0.0001;
+          force *= curl * C;
+          force.y *= -1.0;
+          vec2 vel = texture2D(uVelocity, vUv).xy;
+          gl_FragColor = vec4(vel + force * dt, 0.0, 1.0);
+        }`;
+
+      const pressureShader = `
+        precision mediump float;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform sampler2D uPressure;
+        uniform sampler2D uDivergence;
+        void main () {
+          float L = texture2D(uPressure, vL).x;
+          float R = texture2D(uPressure, vR).x;
+          float T = texture2D(uPressure, vT).x;
+          float B = texture2D(uPressure, vB).x;
+          float divergence = texture2D(uDivergence, vUv).x;
+          float pressure = (L + R + B + T - divergence) * 0.25;
+          gl_FragColor = vec4(pressure, 0.0, 0.0, 1.0);
+        }`;
+
+      const gradientSubtractShader = `
+        precision mediump float;
+        varying vec2 vUv, vL, vR, vT, vB;
+        uniform sampler2D uPressure;
+        uniform sampler2D uVelocity;
+        void main () {
+          float L = texture2D(uPressure, vL).x;
+          float R = texture2D(uPressure, vR).x;
+          float T = texture2D(uPressure, vT).x;
+          float B = texture2D(uPressure, vB).x;
+          vec2 velocity = texture2D(uVelocity, vUv).xy;
+          velocity.xy -= vec2(R - L, T - B);
+          gl_FragColor = vec4(velocity, 0.0, 1.0);
+        }`;
+
+      const copyProgram       = createProgram(baseVertexShader, copyShader);
+      const clearProgram      = createProgram(baseVertexShader, clearShader);
+      const splatProgram      = createProgram(baseVertexShader, splatShader);
+      const advectionProgram  = createProgram(baseVertexShader, advectionShader);
+      const divergenceProgram = createProgram(baseVertexShader, divergenceShader);
+      const curlProgram       = createProgram(baseVertexShader, curlShader);
+      const vorticityProgram  = createProgram(baseVertexShader, vorticityShader);
+      const pressureProgram   = createProgram(baseVertexShader, pressureShader);
+      const gradientProgram   = createProgram(baseVertexShader, gradientSubtractShader);
+
+      const quadBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ARRAY_BUFFER, quadBuffer);
+      gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, -1,1, 1,1, 1,-1]), gl.STATIC_DRAW);
+      const elemBuffer = gl.createBuffer();
+      gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, elemBuffer);
+      gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array([0,1,2, 0,2,3]), gl.STATIC_DRAW);
+      gl.vertexAttribPointer(0, 2, gl.FLOAT, false, 0, 0);
+      gl.enableVertexAttribArray(0);
+
+      function blit(target){
+        if (target == null){
+          gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        } else {
+          gl.viewport(0, 0, target.width, target.height);
+          gl.bindFramebuffer(gl.FRAMEBUFFER, target.fbo);
+        }
+        gl.drawElements(gl.TRIANGLES, 6, gl.UNSIGNED_SHORT, 0);
+      }
+
+      function createFBO(w, h, internalFormat, format, type, param){
+        gl.activeTexture(gl.TEXTURE0);
+        const texture = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, texture);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, param);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        gl.texImage2D(gl.TEXTURE_2D, 0, internalFormat, w, h, 0, format, type, null);
+
+        const fbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, fbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+        gl.viewport(0, 0, w, h);
+        gl.clear(gl.COLOR_BUFFER_BIT);
+
+        return { texture, fbo, width:w, height:h, attach(id){ gl.activeTexture(gl.TEXTURE0 + id); gl.bindTexture(gl.TEXTURE_2D, texture); return id; } };
+      }
+
+      function createDoubleFBO(w, h, internalFormat, format, type, param){
+        let fbo1 = createFBO(w, h, internalFormat, format, type, param);
+        let fbo2 = createFBO(w, h, internalFormat, format, type, param);
+        return {
+          width:w, height:h,
+          get read(){ return fbo1; }, set read(v){ fbo1 = v; },
+          get write(){ return fbo2; }, set write(v){ fbo2 = v; },
+          swap(){ const tmp = fbo1; fbo1 = fbo2; fbo2 = tmp; }
+        };
+      }
+
+      const filtering = supportLinearFiltering ? gl.LINEAR : gl.NEAREST;
+      let dye, velocity, divergenceFBO, curlFBO, pressureFBO;
+
+      function getResolution(res){
+        const aspect = gl.drawingBufferWidth / gl.drawingBufferHeight;
+        const a = aspect < 1 ? 1 / aspect : aspect;
+        const min = Math.round(res);
+        const max = Math.round(res * a);
+        return gl.drawingBufferWidth > gl.drawingBufferHeight ? { width:max, height:min } : { width:min, height:max };
+      }
+
+      function initFBOs(){
+        const simRes = getResolution(config.SIM_RESOLUTION);
+        const dyeRes = getResolution(config.DYE_RESOLUTION);
+        const texType = halfFloatTexType || gl.UNSIGNED_BYTE;
+
+        dye = createDoubleFBO(dyeRes.width, dyeRes.height, formatRGBA.internalFormat, formatRGBA.format, texType, filtering);
+        velocity = createDoubleFBO(simRes.width, simRes.height, formatRG.internalFormat, formatRG.format, texType, filtering);
+        divergenceFBO = createFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+        curlFBO = createFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+        pressureFBO = createDoubleFBO(simRes.width, simRes.height, formatR.internalFormat, formatR.format, texType, gl.NEAREST);
+      }
+
+      function resizeCanvas(){
+        const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+        const w = Math.floor(window.innerWidth * dpr);
+        const h = Math.floor(window.innerHeight * dpr);
+        if (canvas.width !== w || canvas.height !== h){
+          canvas.width = w; canvas.height = h;
+          canvas.style.width = window.innerWidth + 'px';
+          canvas.style.height = window.innerHeight + 'px';
+          return true;
+        }
+        return false;
+      }
+
+      resizeCanvas();
+      initFBOs();
+      window.addEventListener('resize', () => { if (resizeCanvas()) initFBOs(); });
+
+      function hsvToRgb(h, s, v){
+        let r, g, b;
+        const i = Math.floor(h * 6);
+        const f = h * 6 - i;
+        const p = v * (1 - s);
+        const q = v * (1 - f * s);
+        const t = v * (1 - (1 - f) * s);
+        switch (i % 6){
+          case 0: r=v; g=t; b=p; break;
+          case 1: r=q; g=v; b=p; break;
+          case 2: r=p; g=v; b=t; break;
+          case 3: r=p; g=q; b=v; break;
+          case 4: r=t; g=p; b=v; break;
+          case 5: r=v; g=p; b=q; break;
+        }
+        return [r, g, b];
+      }
+
+      let hueCursor = Math.random();
+      function generateColor(){
+        hueCursor = (hueCursor + 0.02 + Math.random() * 0.03) % 1;
+        const c = hsvToRgb(hueCursor, 1.0, 1.0);
+        return { r: c[0], g: c[1], b: c[2] };
+      }
+
+      function splat(x, y, dx, dy, color){
+        gl.useProgram(splatProgram.program);
+        gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
+        gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
+        gl.uniform2f(splatProgram.uniforms.point, x, y);
+        gl.uniform3f(splatProgram.uniforms.color, dx, dy, 0.0);
+        gl.uniform1f(splatProgram.uniforms.radius, config.SPLAT_RADIUS / 100.0);
+        blit(velocity.write);
+        velocity.swap();
+
+        gl.uniform1i(splatProgram.uniforms.uTarget, dye.read.attach(0));
+        gl.uniform3f(splatProgram.uniforms.color, color.r, color.g, color.b);
+        blit(dye.write);
+        dye.swap();
+      }
+
+      let lastX = 0.5, lastY = 0.5;
+      const pointer = { x:0.5, y:0.5, dx:0, dy:0, moved:false, color: generateColor() };
+
+      function updatePointer(clientX, clientY){
+        const x = clientX / window.innerWidth;
+        const y = 1.0 - clientY / window.innerHeight;
+        pointer.dx = (x - lastX) * config.SPLAT_FORCE;
+        pointer.dy = (y - lastY) * config.SPLAT_FORCE;
+        pointer.x = x; pointer.y = y;
+        lastX = x; lastY = y;
+        pointer.moved = Math.abs(pointer.dx) > 0 || Math.abs(pointer.dy) > 0;
+      }
+
+      window.addEventListener('mousemove', (e) => {
+        updatePointer(e.clientX, e.clientY);
+        pointer.color = generateColor();
+      });
+      window.addEventListener('touchmove', (e) => {
+        if (e.touches[0]){
+          updatePointer(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive:true });
+
+      let lastFrameTime = performance.now();
+
+      function step(dt){
+        gl.disable(gl.BLEND);
+
+        gl.useProgram(curlProgram.program);
+        gl.uniform2f(curlProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(curlProgram.uniforms.uVelocity, velocity.read.attach(0));
+        blit(curlFBO);
+
+        gl.useProgram(vorticityProgram.program);
+        gl.uniform2f(vorticityProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(vorticityProgram.uniforms.uVelocity, velocity.read.attach(0));
+        gl.uniform1i(vorticityProgram.uniforms.uCurl, curlFBO.attach(1));
+        gl.uniform1f(vorticityProgram.uniforms.curl, config.CURL);
+        gl.uniform1f(vorticityProgram.uniforms.dt, dt);
+        blit(velocity.write);
+        velocity.swap();
+
+        gl.useProgram(divergenceProgram.program);
+        gl.uniform2f(divergenceProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(divergenceProgram.uniforms.uVelocity, velocity.read.attach(0));
+        blit(divergenceFBO);
+
+        gl.useProgram(clearProgram.program);
+        gl.uniform1i(clearProgram.uniforms.uTexture, pressureFBO.read.attach(0));
+        gl.uniform1f(clearProgram.uniforms.value, config.PRESSURE);
+        blit(pressureFBO.write);
+        pressureFBO.swap();
+
+        gl.useProgram(pressureProgram.program);
+        gl.uniform2f(pressureProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(pressureProgram.uniforms.uDivergence, divergenceFBO.attach(0));
+        for (let i = 0; i < config.PRESSURE_ITERATIONS; i++){
+          gl.uniform1i(pressureProgram.uniforms.uPressure, pressureFBO.read.attach(1));
+          blit(pressureFBO.write);
+          pressureFBO.swap();
+        }
+
+        gl.useProgram(gradientProgram.program);
+        gl.uniform2f(gradientProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(gradientProgram.uniforms.uPressure, pressureFBO.read.attach(0));
+        gl.uniform1i(gradientProgram.uniforms.uVelocity, velocity.read.attach(1));
+        blit(velocity.write);
+        velocity.swap();
+
+        gl.useProgram(advectionProgram.program);
+        gl.uniform2f(advectionProgram.uniforms.texelSize, 1.0/velocity.width, 1.0/velocity.height);
+        gl.uniform1i(advectionProgram.uniforms.uVelocity, velocity.read.attach(0));
+        gl.uniform1i(advectionProgram.uniforms.uSource, velocity.read.attach(0));
+        gl.uniform1f(advectionProgram.uniforms.dt, dt);
+        gl.uniform1f(advectionProgram.uniforms.dissipation, config.VELOCITY_DISSIPATION);
+        blit(velocity.write);
+        velocity.swap();
+
+        gl.uniform1i(advectionProgram.uniforms.uVelocity, velocity.read.attach(0));
+        gl.uniform1i(advectionProgram.uniforms.uSource, dye.read.attach(1));
+        gl.uniform1f(advectionProgram.uniforms.dissipation, config.DENSITY_DISSIPATION);
+        blit(dye.write);
+        dye.swap();
+      }
+
+      function render(){
+        gl.viewport(0, 0, gl.drawingBufferWidth, gl.drawingBufferHeight);
+        gl.useProgram(copyProgram.program);
+        gl.uniform1i(copyProgram.uniforms.uTexture, dye.read.attach(0));
+        blit(null);
+      }
+
+      function loop(now){
+        const dt = Math.min((now - lastFrameTime) / 1000, 1/60);
+        lastFrameTime = now;
+
+        if (pointer.moved){
+          splat(pointer.x, pointer.y, pointer.dx, pointer.dy, pointer.color);
+
+          pointer.moved = false;
+        }
+        step(dt);
+        render();
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    })();
+  </script>
+
+</body>
+</html>
