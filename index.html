@@ -2197,6 +2197,8 @@
         modal.classList.add('is-open');
         modal.setAttribute('aria-hidden', 'false');
         document.body.style.overflow = 'hidden';
+        // The modal covers the canvas entirely, so stop simulating it.
+        if (window.setBackgroundAnimationPaused) window.setBackgroundAnimationPaused(true);
       }
 
       modalScroll.scrollTop = 0;
@@ -2225,6 +2227,8 @@
       modal.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
       openSlug = null;
+
+      if (window.setBackgroundAnimationPaused) window.setBackgroundAnimationPaused(false);
 
       teardownPointCloud();
 
@@ -3046,10 +3050,11 @@
       let smokeLoopRunning = false;
       let tabHidden = document.hidden;
       let smokeInView = true;
-      let smokeIsActive = !tabHidden && smokeInView;
+      let smokeModalOpen = false;
+      let smokeIsActive = !tabHidden && smokeInView && !smokeModalOpen;
 
       function startSmokeLoopIfNeeded(){
-        smokeIsActive = !tabHidden && smokeInView;
+        smokeIsActive = !tabHidden && smokeInView && !smokeModalOpen;
         if (smokeIsActive && !smokeLoopRunning){
           smokeLoopRunning = true;
           lastFrameTime = performance.now();
@@ -3057,19 +3062,38 @@
         }
       }
 
+      // Lets the modal controller pause the simulation while a project modal is
+      // open: the canvas is fully covered at that point, so simulating and
+      // redrawing it every frame is wasted GPU work.
+      window.setBackgroundAnimationPaused = function(paused){
+        smokeModalOpen = !!paused;
+        if (smokeModalOpen){
+          // loop() checks smokeIsActive and bails on its next frame.
+          smokeIsActive = false;
+        } else {
+          startSmokeLoopIfNeeded();
+        }
+      };
+
       document.addEventListener('visibilitychange', () => {
         tabHidden = document.hidden;
         startSmokeLoopIfNeeded();
       });
 
       if ('IntersectionObserver' in window){
+        // The canvas itself is position:fixed/inset:0, so it is ALWAYS intersecting
+        // the viewport and observing it would never report false. What actually hides
+        // the smoke is .content-wall (z-index 2, opaque background) scrolling over it,
+        // so track the hero instead: once the hero is off screen the wall covers the
+        // viewport completely and there is nothing left to see.
+        const heroEl = document.querySelector('main.hero') || canvas;
         const smokeObserver = new IntersectionObserver((entries) => {
           entries.forEach(entry => {
             smokeInView = entry.isIntersecting;
           });
           startSmokeLoopIfNeeded();
         }, { threshold: 0 });
-        smokeObserver.observe(canvas);
+        smokeObserver.observe(heroEl);
       }
 
       startSmokeLoopIfNeeded();
